@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1a1412">
-  <meta name="description" content="FABULA — drama musikal tentang krisis iklim, satwa endemik Indonesia, dan harga dari sebuah pengkhianatan.">
+  <meta name="description" content="FABULA — a musical about the climate crisis, Indonesia's endemic wildlife, and the cost of betrayal.">
   <title>FABULA — A Musical in the Wild</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -150,6 +150,28 @@
       letter-spacing: .025em;
     }
     .section-intro { max-width: 650px; color: var(--muted); line-height: 1.8; }
+    .contributors-table-wrap {
+      margin-top: 38px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      background: rgba(33,26,23,.82);
+    }
+    .contributors-table { width: 100%; min-width: 680px; border-collapse: collapse; text-align: left; }
+    .contributors-table caption {
+      padding: 18px 22px;
+      color: var(--gold);
+      font: 500 14px "Cinzel",Georgia,serif;
+      letter-spacing: .1em;
+      text-align: left;
+    }
+    .contributors-table th, .contributors-table td { border-top: 1px solid rgba(212,175,55,.14); padding: 15px 18px; }
+    .contributors-table th { color: var(--gold); background: rgba(74,53,37,.3); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+    .contributors-table td { color: #d7cbbc; font-size: 12px; line-height: 1.6; }
+    .contributors-table tbody tr { transition: background .2s ease; }
+    .contributors-table tbody tr:hover { background: rgba(212,175,55,.06); }
+    .contributors-table .row-number { width: 54px; color: var(--gold); font: 500 13px "Cinzel",Georgia,serif; }
+    .contributors-table .member-name { color: var(--cream); font-weight: 600; white-space: nowrap; }
+    .contributors-table .member-npm { color: #e4d398; font-variant-numeric: tabular-nums; letter-spacing: .07em; white-space: nowrap; }
     .hero {
       position: relative;
       min-height: 680px;
@@ -376,7 +398,7 @@
     .tech-panel-head p { margin:8px 0 0; color:var(--muted); font-size:11px; line-height:1.7; }
     .stage-box {
       position:relative;
-      min-height:295px;
+      min-height:335px;
       margin:20px;
       display:grid;
       place-items:center;
@@ -387,16 +409,124 @@
         linear-gradient(145deg, #1d2920, #211814);
     }
     .stage-box::before { position:absolute; inset:0; content:""; opacity:.6; background:radial-gradient(ellipse at 50% 0%,var(--scene-glow),transparent 60%); transition:background .6s; }
-    .stage-orbit { position:relative; width:215px; height:215px; display:grid; place-items:center; border:1px dashed rgba(212,175,55,.35); border-radius:50%; transition:transform .8s cubic-bezier(.2,.8,.2,1); }
-    .stage-orbit::before,.stage-orbit::after { position:absolute; content:""; border:1px solid rgba(212,175,55,.72); border-radius:50%; }
-    .stage-orbit::before { inset:20px; }
-    .stage-orbit::after { inset:46px; border-color:rgba(212,175,55,.28); }
-    .stage-center { z-index:1; width:70px; height:70px; display:grid; place-items:center; border:1px solid var(--gold); border-radius:50%; color:var(--gold); background:#211a17; font-size:11px; font-weight:700; letter-spacing:.1em; }
+    .stage-visual { position:absolute; inset:43px 8px 36px; }
+    .stage-semicircle {
+      position:absolute;
+      inset:20px 0 0;
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      align-items:center;
+      gap:4px;
+      transition:opacity .45s ease,transform .65s cubic-bezier(.2,.8,.2,1);
+    }
+    .stage-semicircle::before {
+      position:absolute;
+      right:3%;
+      bottom:0;
+      left:3%;
+      height:88%;
+      border:1px solid rgba(212,175,55,.5);
+      border-bottom:0;
+      border-radius:100% 100% 0 0 / 100% 100% 0 0;
+      content:"";
+      background:radial-gradient(ellipse at 50% 100%,rgba(212,175,55,.12),transparent 67%);
+      transition:opacity .4s ease;
+    }
+    .stage-zone {
+      --arc-lift:0px;
+      --orbit-x:0px;
+      --orbit-y:0px;
+      position:relative;
+      z-index:1;
+      min-width:0;
+      height:96px;
+      display:flex;
+      align-items:center;
+      flex-direction:column;
+      justify-content:center;
+      gap:4px;
+      border:1px solid rgba(212,175,55,.28);
+      border-radius:48% 48% 4px 4px / 22% 22% 4px 4px;
+      padding:7px 3px;
+      color:var(--cream);
+      background:linear-gradient(180deg,rgba(74,53,37,.9),rgba(25,21,18,.96));
+      cursor:pointer;
+      transform:translateY(var(--arc-lift));
+      transition:background .35s,border-color .35s,box-shadow .35s,transform .65s cubic-bezier(.2,.8,.2,1),border-radius .4s;
+    }
+    .stage-zone:nth-of-type(1) { --arc-lift:10px; --orbit-x:0px; --orbit-y:-78px; }
+    .stage-zone:nth-of-type(2) { --arc-lift:-9px; --orbit-x:73px; --orbit-y:-24px; }
+    .stage-zone:nth-of-type(3) { --arc-lift:-20px; --orbit-x:45px; --orbit-y:57px; }
+    .stage-zone:nth-of-type(4) { --arc-lift:-9px; --orbit-x:-45px; --orbit-y:57px; }
+    .stage-zone:nth-of-type(5) { --arc-lift:10px; --orbit-x:-73px; --orbit-y:-24px; }
+    .stage-zone:hover,.stage-zone.active { border-color:var(--gold); background:linear-gradient(180deg,rgba(120,91,41,.9),rgba(35,27,19,.98)); box-shadow:0 0 22px rgba(212,175,55,.16); }
+    .stage-zone:focus-visible { outline:2px solid #f3df8a; outline-offset:2px; }
+    .stage-zone .zone-icon { color:var(--gold); font-size:16px; line-height:1; }
+    .stage-zone strong { overflow:hidden; max-width:100%; color:#f3df8a; font-size:8px; letter-spacing:.09em; text-overflow:ellipsis; white-space:nowrap; }
+    .stage-zone small { color:#c8bba9; font-size:7px; line-height:1.35; text-align:center; }
+    .stage-convergence {
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      opacity:0;
+      pointer-events:none;
+      transform:scale(.7);
+      transition:opacity .45s ease,transform .65s cubic-bezier(.2,.8,.2,1);
+    }
+    .stage-convergence::before,.stage-convergence::after {
+      position:absolute;
+      width:184px;
+      height:184px;
+      border:1px solid rgba(212,175,55,.62);
+      border-radius:50%;
+      content:"";
+      box-shadow:0 0 38px rgba(212,175,55,.13),inset 0 0 30px rgba(212,175,55,.08);
+    }
+    .stage-convergence::after { width:142px; height:142px; border-style:dashed; border-color:rgba(212,175,55,.35); }
+    .stage-core {
+      position:relative;
+      z-index:2;
+      width:76px;
+      height:76px;
+      display:flex;
+      align-items:center;
+      flex-direction:column;
+      justify-content:center;
+      border:1px solid var(--gold);
+      border-radius:50%;
+      color:var(--gold);
+      background:radial-gradient(circle,#3c3020,#1b1715 75%);
+      box-shadow:0 0 28px rgba(212,175,55,.28);
+      text-align:center;
+    }
+    .stage-core strong { font:600 10px "Cinzel",Georgia,serif; letter-spacing:.1em; }
+    .stage-core small { margin-top:4px; color:#f3df8a; font-size:6px; font-weight:700; letter-spacing:.1em; }
+    .stage-visual[data-angle="360"] .stage-semicircle { opacity:1; transform:scale(.8); }
+    .stage-visual[data-angle="360"] .stage-semicircle::before { opacity:0; }
+    .stage-visual[data-angle="360"] .stage-zone {
+      position:absolute;
+      top:52%;
+      left:50%;
+      width:62px;
+      height:52px;
+      border-radius:50%;
+      padding:4px 2px;
+      background:linear-gradient(145deg,rgba(74,53,37,.98),rgba(25,21,18,.98));
+      transform:translate(calc(-50% + var(--orbit-x)),calc(-50% + var(--orbit-y))) scale(.92);
+    }
+    .stage-visual[data-angle="360"] .stage-zone strong { font-size:7px; }
+    .stage-visual[data-angle="360"] .stage-zone small { font-size:6px; }
+    .stage-visual[data-angle="360"] .stage-zone .zone-icon { font-size:12px; }
+    .stage-visual[data-angle="360"] .stage-convergence { opacity:1; transform:scale(1); }
     .stage-audience { position:absolute; bottom:17px; color:rgba(245,239,230,.55); font-size:9px; letter-spacing:.18em; }
     .stage-caption { position:absolute; top:17px; color:var(--gold); font-size:9px; font-weight:700; letter-spacing:.17em; }
     .stage-controls { display:flex; gap:9px; padding:0 20px 20px; }
     .stage-controls button { flex:1; border:1px solid rgba(212,175,55,.3); padding:10px 8px; color:var(--muted); background:transparent; cursor:pointer; font-size:10px; transition:all .2s; }
     .stage-controls button.active { border-color:var(--gold); color:var(--ink); background:var(--gold); }
+    .stage-score { margin:0 20px 20px; border-left:2px solid var(--gold); padding:10px 12px; background:rgba(26,20,18,.48); }
+    .stage-score strong { display:block; margin-bottom:5px; color:#f0d978; font-size:9px; letter-spacing:.12em; text-transform:uppercase; }
+    .stage-score p { margin:0; color:#c9bdae; font-size:10px; line-height:1.65; }
     .scene-simulator { min-height:100%; overflow:hidden; transition:background .5s; }
     .scene-simulator[data-scene="forest"] { background:linear-gradient(145deg,rgba(49,83,49,.33),rgba(33,26,23,.88)); }
     .scene-simulator[data-scene="fire"] { background:linear-gradient(145deg,rgba(145,52,30,.43),rgba(33,26,23,.88)); }
@@ -428,6 +558,10 @@
     .modal-card h2 { margin:0 35px 8px 0; font:500 25px "Cinzel",Georgia,serif; }
     .modal-card .modal-subtitle { margin:0 0 20px; color:var(--gold); font-size:11px; }
     .modal-card p { color:#c9bdae; font-size:13px; line-height:1.8; }
+    .modal-image-figure { margin:0 0 20px; }
+    .modal-image-figure[hidden] { display:none; }
+    .modal-image-figure img { display:block; width:100%; max-height:430px; object-fit:contain; border:1px solid var(--line); background:#f5f5f5; }
+    .modal-image-figure figcaption { margin-top:8px; color:var(--muted); font-size:10px; line-height:1.6; }
     .modal-close { position:absolute; top:14px; right:14px; width:34px; height:34px; border:1px solid var(--line); color:var(--cream); background:transparent; cursor:pointer; font-size:18px; }
     .site-footer { border-top:1px solid rgba(212,175,55,.14); padding:25px 24px; color:rgba(245,239,230,.48); text-align:center; font-size:9px; letter-spacing:.16em; }
     .site-footer span { color:var(--gold); }
@@ -463,6 +597,19 @@
       .scene-tabs { padding-right:13px; padding-left:13px; }
       .scene-button { font-size:8px; }
       .stage-controls button { font-size:9px; }
+      .stage-zone { height:82px; gap:3px; padding:5px 2px; }
+      .stage-zone .zone-icon { font-size:13px; }
+      .stage-zone strong { font-size:7px; letter-spacing:.04em; }
+      .stage-zone small { font-size:6px; }
+      .stage-visual[data-angle="360"] .stage-zone { width:54px; height:47px; }
+      .stage-visual[data-angle="360"] .stage-zone:nth-of-type(1) { --orbit-x:0px; --orbit-y:-67px; }
+      .stage-visual[data-angle="360"] .stage-zone:nth-of-type(2) { --orbit-x:63px; --orbit-y:-20px; }
+      .stage-visual[data-angle="360"] .stage-zone:nth-of-type(3) { --orbit-x:39px; --orbit-y:49px; }
+      .stage-visual[data-angle="360"] .stage-zone:nth-of-type(4) { --orbit-x:-39px; --orbit-y:49px; }
+      .stage-visual[data-angle="360"] .stage-zone:nth-of-type(5) { --orbit-x:-63px; --orbit-y:-20px; }
+      .stage-convergence::before { width:166px; height:166px; }
+      .stage-convergence::after { width:124px; height:124px; }
+      .stage-core { width:67px; height:67px; }
       .modal-card { padding:27px 22px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -474,13 +621,14 @@
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="#home" aria-label="FABULA — Home">FABULA<small>A MUSICAL IN THE WILD</small></a>
-      <nav aria-label="Navigasi utama">
+      <nav aria-label="Main navigation">
         <ul class="nav-list" role="tablist">
           <li><button class="nav-tab" id="tab-home" role="tab" aria-selected="true" aria-controls="page-home" data-page="home">HOME</button></li>
           <li><button class="nav-tab" id="tab-description" role="tab" aria-selected="false" aria-controls="page-description" data-page="description">DESCRIPTION</button></li>
           <li><button class="nav-tab" id="tab-casting" role="tab" aria-selected="false" aria-controls="page-casting" data-page="casting">CASTING</button></li>
           <li><button class="nav-tab" id="tab-costume" role="tab" aria-selected="false" aria-controls="page-costume" data-page="costume">COSTUME</button></li>
           <li><button class="nav-tab" id="tab-technical" role="tab" aria-selected="false" aria-controls="page-technical" data-page="technical">TECHNICAL</button></li>
+          <li><button class="nav-tab" id="tab-contributors" role="tab" aria-selected="false" aria-controls="page-contributors" data-page="contributors">CONTRIBUTORS</button></li>
         </ul>
       </nav>
     </div>
@@ -492,126 +640,178 @@
         <div class="curtain left" aria-hidden="true"></div>
         <div class="curtain right" aria-hidden="true"></div>
         <div class="hero-content">
-          <div class="hero-kicker">Sebuah kisah tentang rumah yang terbakar</div>
+          <div class="hero-kicker">A story of a home set ablaze</div>
           <h1 class="hero-title gold-text">FABULA<span>THE WILD HAS A VOICE</span></h1>
-          <p class="hero-copy">Saat hutan kehilangan suaranya, para penjaganya bersatu. Sebuah drama musikal tentang krisis iklim, satwa endemik Indonesia, dan harga dari sebuah pengkhianatan.</p>
-          <button class="outline-button" data-go="description">MASUK KE CERITA <span aria-hidden="true">→</span></button>
+          <p class="hero-copy">When the forest loses its voice, its guardians unite. A musical about the climate crisis, Indonesia's endemic wildlife, and the cost of betrayal.</p>
+          <button class="outline-button" data-go="description">ENTER THE STORY <span aria-hidden="true">→</span></button>
         </div>
-        <div class="hero-note"><span>Teater • Alam • Perlawanan</span><span>Indonesia, hari ini</span></div>
+        <div class="hero-note"><span>Theatre • Nature • Resistance</span><span>Indonesia, today</span></div>
       </div>
 
       <div class="shortcut-section">
         <div class="shortcut-head">
-          <h2 class="serif">Jelajahi dunia <span class="gold-text">FABULA</span></h2>
-          <p>Pilih satu bab untuk membuka tirai.</p>
+          <h2 class="serif">Explore the world of <span class="gold-text">FABULA</span></h2>
+          <p>Choose a chapter and draw back the curtain.</p>
         </div>
         <div class="shortcut-grid">
-          <button class="shortcut-card" data-go="description"><span class="shortcut-icon" aria-hidden="true">✦</span><strong>DESCRIPTION</strong><span>Kenali kisah dan taruhan di balik hutan.</span></button>
-          <button class="shortcut-card" data-go="casting"><span class="shortcut-icon" aria-hidden="true">♟</span><strong>CASTING</strong><span>Temui para penjaga dan pemburu cerita.</span></button>
-          <button class="shortcut-card" data-go="costume"><span class="shortcut-icon" aria-hidden="true">❖</span><strong>COSTUME</strong><span>Lihat alam menjelma menjadi karakter.</span></button>
-          <button class="shortcut-card" data-go="technical"><span class="shortcut-icon" aria-hidden="true">◎</span><strong>TECHNICAL</strong><span>Rasakan dunia panggung dari dekat.</span></button>
+          <button class="shortcut-card" data-go="description"><span class="shortcut-icon" aria-hidden="true">✦</span><strong>DESCRIPTION</strong><span>Discover the story and what is at stake.</span></button>
+          <button class="shortcut-card" data-go="casting"><span class="shortcut-icon" aria-hidden="true">♟</span><strong>CASTING</strong><span>Meet the guardians and the schemer.</span></button>
+          <button class="shortcut-card" data-go="costume"><span class="shortcut-icon" aria-hidden="true">❖</span><strong>COSTUME</strong><span>See nature transformed into character.</span></button>
+          <button class="shortcut-card" data-go="technical"><span class="shortcut-icon" aria-hidden="true">◎</span><strong>TECHNICAL</strong><span>Experience the world of the stage.</span></button>
         </div>
       </div>
     </section>
 
     <section class="page" id="page-description" role="tabpanel" aria-labelledby="tab-description">
-      <div class="eyebrow">Catatan dramaturgi</div>
-      <h2 class="section-heading">Satu hutan. Banyak suara.<br><span class="gold-text">Satu pertaruhan.</span></h2>
-      <p class="section-intro">FABULA membawa krisis iklim dan ancaman terhadap satwa endemik ke panggung musikal yang terus berubah—dari lingkaran tradisi menuju dunia modern yang bising.</p>
+      <div class="eyebrow">Dramaturg's notes</div>
+      <h2 class="section-heading">One forest. Many voices.<br><span class="gold-text">Everything at stake.</span></h2>
+      <p class="section-intro">FABULA brings the climate crisis and the threats facing endemic wildlife to a musical stage in constant transformation—from a circle rooted in tradition to a noisy modern world.</p>
       <div class="editorial-grid">
         <article class="editorial-card">
-          <div class="image-frame"><span>Frame dokumentasi · Asal mula</span></div>
-          <div class="editorial-copy"><h3>ORIGIN</h3><p>Konsep ini berangkat dari keprihatinan terhadap krisis iklim, khususnya kebakaran hutan (karhutla) dan ancaman kepunahan satwa endemik Indonesia. Karya ini membawa isu lingkungan ke atas panggung yang dinamis melalui benturan karakter musikal yang merepresentasikan masyarakat yang terpecah. Ide penggunaan panggung melingkar 360 derajat dirancang untuk memberikan pengalaman baru dan perspektif yang luas bagi penonton.</p></div>
+          <div class="image-frame"><span>Documentation frame · Origins</span></div>
+          <div class="editorial-copy"><h3>ORIGIN</h3><p>The concept grew from concern about the climate crisis—especially forest fires and the threat of extinction facing Indonesia's endemic wildlife. The work brings environmental issues to a dynamic stage through clashing musical characters who represent a divided society. A circular 360-degree stage was conceived to give the audience a fresh experience and a broader perspective.</p></div>
         </article>
         <article class="editorial-card">
-          <div class="image-frame"><span>Frame dokumentasi · Aliansi</span></div>
-          <div class="editorial-copy"><h3>PREMIS</h3><p>Berbagai satwa terancam punah bersatu melawan kehancuran habitat mereka akibat kebakaran hutan, namun pengkhianatan dari dalam aliansi justru membuat mereka terjebak menjadi korban perdagangan satwa liar ilegal.</p></div>
+          <div class="image-frame"><span>Documentation frame · The alliance</span></div>
+          <div class="editorial-copy"><h3>PREMISE</h3><p>Endangered animals unite against the destruction of their habitat by forest fires. But betrayal from within the alliance leaves them trapped and at the mercy of the illegal wildlife trade.</p></div>
         </article>
         <article class="editorial-card">
-          <div class="image-frame"><span>Frame dokumentasi · Konflik</span></div>
-          <div class="editorial-copy"><h3>CONFLICT</h3><p>Setelah kehilangan rumah akibat karhutla, satwa-satwa langka bersatu melawan manusia perusak habitat. Namun perjuangan berubah arah ketika salah satu dari mereka berkhianat. Akibatnya, seluruh aliansi tertangkap, dikurung, dan dijual di pasar hewan ilegal—sebuah akhir kelam yang dipertegas oleh benturan musik etnik tradisional dan ketukan phonk modern.</p></div>
+          <div class="image-frame"><span>Documentation frame · Conflict</span></div>
+          <div class="editorial-copy"><h3>CONFLICT</h3><p>After forest fires destroy their home, rare animals unite against the humans destroying their habitat. Their struggle takes a turn when one of them betrays the others. The entire alliance is captured, caged, and sold in an illegal animal market—a dark ending underscored by the clash of traditional ethnic music and modern phonk beats.</p></div>
         </article>
         <article class="editorial-card">
-          <div class="image-frame"><span>Frame dokumentasi · Tema</span></div>
-          <div class="editorial-copy"><h3>THEME</h3><p>Kehancuran satu habitat berarti kehancuran seluruh makhluk hidup, bukan hanya satu spesies. Persatuan adalah kekuatan terbesar mereka, tetapi keserakahan dan pengkhianatan dapat menghancurkannya dari dalam. Pergeseran musik dari tradisional ke modern menyimbolkan bagaimana alam yang dulu hidup dan mengakar kuat pada budaya kini direduksi menjadi sekadar komoditas.</p></div>
+          <div class="image-frame"><span>Documentation frame · Themes</span></div>
+          <div class="editorial-copy"><h3>THEME</h3><p>The destruction of one habitat threatens every living thing, not just a single species. Unity is the animals' greatest strength, yet greed and betrayal can break it from within. The shift from traditional music to modern sounds reflects how nature, once alive and deeply rooted in culture, is now reduced to a commodity.</p></div>
         </article>
         <article class="editorial-card">
-          <div class="image-frame"><span>Frame dokumentasi · Taruhan</span></div>
-          <div class="editorial-copy"><h3>STAKES</h3><p>Masa depan satwa liar Indonesia dipertaruhkan. Jika mereka gagal bersatu, habitat akan terus lenyap dan makin banyak spesies terancam punah serta diperdagangkan secara ilegal. Lebih dari sekadar kelangsungan hidup satwa, warisan alam Indonesia ikut terancam dengan pertanyaan besar: <em>jika persatuan tak mampu mengalahkan keserakahan dan pengkhianatan, apa yang tersisa dari dunia yang mereka perjuangkan?</em></p></div>
+          <div class="image-frame"><span>Documentation frame · The stakes</span></div>
+          <div class="editorial-copy"><h3>STAKES</h3><p>The future of Indonesia's wildlife hangs in the balance. If the animals fail to unite, habitats will keep disappearing, and more species will face extinction and illegal trade. More than their survival, Indonesia's natural heritage is at risk. The central question remains: <em>if unity cannot overcome greed and betrayal, what will be left of the world they are fighting for?</em></p></div>
         </article>
         <article class="editorial-card">
-          <div class="image-frame"><span>Frame dokumentasi · Pengalaman</span></div>
-          <div class="editorial-copy"><h3>REPEATABILITY</h3><p>Pertunjukan ini layak ditonton berulang kali karena penonton akan merasakan kepuasan melihat perlawanan satwa terhadap ketidakcakapan penanganan karhutla, perusahaan swasta, dan individu serakah. Ditambah lagi, transisi panggung dari 180° menjadi 360° yang dipadukan dengan musik tradisional hingga phonk di akhir menciptakan pengalaman menonton yang memikat dan tidak membosankan.</p></div>
+          <div class="image-frame"><span>Documentation frame · The experience</span></div>
+          <div class="editorial-copy"><h3>WHY SEE IT AGAIN?</h3><p>The show invites repeat viewing through the animals' resistance to failed wildfire responses, private companies, and greedy individuals. Its transformation from a 180° to a 360° stage, paired with a musical journey from traditional sounds to phonk, makes every viewing vivid and engaging.</p></div>
         </article>
       </div>
     </section>
 
     <section class="page" id="page-casting" role="tabpanel" aria-labelledby="tab-casting">
-      <div class="eyebrow">Para penghuni rimba</div>
-      <h2 class="section-heading">Temui <span class="gold-text">karakternya.</span></h2>
-      <p class="section-intro">Setiap suara membawa harapan, luka, dan rahasia. Pilih kartu untuk mengenal peran mereka lebih dekat.</p>
+      <div class="eyebrow">Voices of the forest</div>
+      <h2 class="section-heading">Meet the <span class="gold-text">characters.</span></h2>
+      <p class="section-intro">Every voice carries hope, pain, and secrets. Select a card to learn more about each character.</p>
       <div class="card-grid" id="casting-grid"></div>
     </section>
 
     <section class="page" id="page-costume" role="tabpanel" aria-labelledby="tab-costume">
-      <div class="eyebrow">Busana & identitas</div>
-      <h2 class="section-heading">Alam menjadi <span class="gold-text">tokoh.</span></h2>
-      <p class="section-intro">Tekstur hutan dan ciri satwa bertemu siluet urban. Setiap detail kostum menyimpan jejak habitat, sekaligus perubahan dunia yang mengancamnya.</p>
-      <div class="filter-row" role="group" aria-label="Filter kategori kostum">
-        <button class="filter-button active" data-filter="Semua">Semua</button>
-        <button class="filter-button" data-filter="Satwa Endemik">Satwa Endemik</button>
-        <button class="filter-button" data-filter="Antagonis / Urban">Antagonis / Urban</button>
+      <div class="eyebrow">Costume & identity</div>
+      <h2 class="section-heading">Nature becomes a <span class="gold-text">character.</span></h2>
+      <p class="section-intro">Forest textures and animal traits meet urban silhouettes. Each costume carries traces of a habitat and the changes threatening it.</p>
+      <div class="filter-row" role="group" aria-label="Filter costume categories">
+        <button class="filter-button active" data-filter="All">All</button>
+        <button class="filter-button" data-filter="Endemic Wildlife">Endemic Wildlife</button>
+        <button class="filter-button" data-filter="Antagonist / Urban">Antagonist / Urban</button>
       </div>
       <div class="card-grid" id="costume-grid"></div>
     </section>
 
     <section class="page" id="page-technical" role="tabpanel" aria-labelledby="tab-technical">
-      <div class="eyebrow">Di balik tirai</div>
-      <h2 class="section-heading">Panggung yang <span class="gold-text">bernapas.</span></h2>
-      <p class="section-intro">Perubahan ruang, cahaya, aroma, dan musik mengajak penonton bergerak bersama perjalanan para satwa—dari rimba yang hidup ke kota yang mengurung.</p>
+      <div class="eyebrow">Behind the curtain</div>
+      <h2 class="section-heading">A stage that <span class="gold-text">breathes.</span></h2>
+      <p class="section-intro">Shifting space, light, scent, and music draw the audience into the animals' journey—from a living forest to a city that cages them.</p>
       <div class="tech-layout">
         <article class="tech-panel">
-          <div class="tech-panel-head"><h3>Transformasi panggung</h3><p>Dari panggung frontal 180° menuju lingkaran 360° yang membuka perspektif penonton dari segala arah.</p></div>
+          <div class="tech-panel-head"><h3>Stage transformation</h3><p>At 180°, five separate animal stages each carry a unique musical motif. At 360°, the motifs converge at the center for the final climax.</p></div>
           <div class="stage-box" id="stage-box">
-            <span class="stage-caption" id="stage-caption">PERSPEKTIF FRONTAL</span>
-            <div class="stage-orbit" id="stage-orbit"><div class="stage-center">FABULA</div></div>
-            <span class="stage-audience" id="stage-audience">PENONTON · 180°</span>
+            <span class="stage-caption" id="stage-caption">FIVE ANIMAL STAGES · 180°</span>
+            <div class="stage-visual" id="stage-visual" data-angle="180" role="group" aria-label="Five separate animal stages">
+              <div class="stage-semicircle">
+                <button class="stage-zone active" data-character="korang" aria-pressed="true" aria-label="Korang: hornbill calls and hand drums">
+                  <span class="zone-icon" aria-hidden="true">♧</span><strong>KORANG</strong><small>Call + drums</small>
+                </button>
+                <button class="stage-zone" data-character="mawas" aria-pressed="false" aria-label="Mawas: low frame drums and bamboo flute">
+                  <span class="zone-icon" aria-hidden="true">◉</span><strong>MAWAS</strong><small>Frame drum + flute</small>
+                </button>
+                <button class="stage-zone" data-character="gundul" aria-pressed="false" aria-label="Gundul: hand drums and seed shakers">
+                  <span class="zone-icon" aria-hidden="true">♙</span><strong>GUNDUL</strong><small>Hand drums + seeds</small>
+                </button>
+                <button class="stage-zone" data-character="banyu" aria-pressed="false" aria-label="Banyu: deep gong and bowed bass">
+                  <span class="zone-icon" aria-hidden="true">◇</span><strong>BANYU</strong><small>Gong + bowed bass</small>
+                </button>
+                <button class="stage-zone" data-character="kenny" aria-pressed="false" aria-label="Kenny: woodblock clicks and electronic pulse">
+                  <span class="zone-icon" aria-hidden="true">⌁</span><strong>KENNY</strong><small>Woodblock + pulse</small>
+                </button>
+              </div>
+              <div class="stage-convergence" aria-hidden="true">
+                <div class="stage-core"><strong>FABULA</strong><small>FINAL CLIMAX</small></div>
+              </div>
+            </div>
+            <span class="stage-audience" id="stage-audience">AUDIENCE · FRONTAL 180°</span>
           </div>
           <div class="stage-controls">
             <button class="active" data-angle="180" aria-pressed="true">◖ 180° FRONTAL</button>
-            <button data-angle="360" aria-pressed="false">◎ 360° MELINGKAR</button>
+            <button data-angle="360" aria-pressed="false">◎ 360° CIRCULAR</button>
+          </div>
+          <div class="stage-score" aria-live="polite" aria-atomic="true">
+            <strong id="stage-score-title">Korang · Hornbill-call motif</strong>
+            <p id="stage-score-description">A bright hornbill-call phrase rides above syncopated hand drums, introducing the forest.</p>
           </div>
         </article>
         <article class="tech-panel scene-simulator" id="scene-simulator" data-scene="forest">
-          <div class="tech-panel-head"><h3>Simulasi multisensori</h3><p>Pilih adegan untuk mengubah atmosfer panggung.</p></div>
-          <div class="scene-tabs" role="group" aria-label="Pilih adegan">
-            <button class="scene-button active" data-scene-button="forest" aria-pressed="true">01 · HUTAN</button>
-            <button class="scene-button" data-scene-button="fire" aria-pressed="false">02 · KARHUTLA</button>
-            <button class="scene-button" data-scene-button="market" aria-pressed="false">03 · PASAR GELAP</button>
+          <div class="tech-panel-head"><h3>Multisensory simulation</h3><p>Choose a scene to transform the stage atmosphere.</p></div>
+          <div class="scene-tabs" role="group" aria-label="Choose a scene">
+            <button class="scene-button active" data-scene-button="forest" aria-pressed="true">01 · FOREST</button>
+            <button class="scene-button" data-scene-button="fire" aria-pressed="false">02 · WILDFIRE</button>
+            <button class="scene-button" data-scene-button="market" aria-pressed="false">03 · BLACK MARKET</button>
           </div>
           <div class="scene-content" aria-live="polite">
-            <h3 id="scene-title">Hutan Tropis</h3>
-            <p id="scene-description">Rumah yang hidup menjadi pembuka perjalanan—hangat, rimbun, dan penuh irama.</p>
+            <h3 id="scene-title">Tropical Forest</h3>
+            <p id="scene-description">A living home opens the journey—warm, lush, and full of rhythm.</p>
             <div class="sense-list">
-              <div class="sense-item"><div class="sense-icon" aria-hidden="true">◉</div><div><strong>Visual</strong><span id="sense-visual">Cahaya hijau keemasan menyaring kanopi; bayangan daun bergerak di lantai panggung.</span></div></div>
-              <div class="sense-item"><div class="sense-icon" aria-hidden="true">♨</div><div><strong>Aroma · Scent diffuser</strong><span id="sense-scent">Kayu basah, tanah hutan, dan dedaunan segar.</span></div></div>
-              <div class="sense-item"><div class="sense-icon" aria-hidden="true">♫</div><div><strong>Audio · Musik</strong><span id="sense-audio">Musik etnik tradisional ritmis, berpadu bunyi alam.</span></div></div>
-              <div class="sense-item"><div class="sense-icon" aria-hidden="true">◎</div><div><strong>Sudut panggung</strong><span id="sense-stage">Panggung 180° frontal; fokus visual tertuju pada kesatuan para satwa.</span></div></div>
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">◉</div><div><strong>Visual</strong><span id="sense-visual">Golden-green light filters through the canopy; leaf shadows move across the stage floor.</span></div></div>
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">♨</div><div><strong>Scent · Diffuser</strong><span id="sense-scent">Wet wood, forest soil, and fresh leaves.</span></div></div>
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">♫</div><div><strong>Audio · Music</strong><span id="sense-audio">Rhythmic traditional music blended with natural sounds.</span></div></div>
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">◎</div><div><strong>Stage angle</strong><span id="sense-stage">A frontal 180° stage focuses the audience on the animals' unity.</span></div></div>
             </div>
-            <p class="scene-footnote" id="scene-footnote">Nuansa dibangun melalui permainan cahaya, proyeksi, dan tata suara—aroma merupakan simulasi konseptual.</p>
+            <p class="scene-footnote" id="scene-footnote">Atmosphere is created through lighting, projection, and sound design; scent is a conceptual simulation.</p>
           </div>
         </article>
       </div>
     </section>
+
+    <section class="page" id="page-contributors" role="tabpanel" aria-labelledby="tab-contributors">
+      <div class="eyebrow">The people behind FABULA</div>
+      <h2 class="section-heading">Meet the <span class="gold-text">contributors.</span></h2>
+      <p class="section-intro">The team bringing FABULA's story, visuals, and stage experience to life.</p>
+      <div class="contributors-table-wrap">
+        <table class="contributors-table">
+          <caption>FABULA team & responsibilities</caption>
+          <thead>
+            <tr><th scope="col">No.</th><th scope="col">Name</th><th scope="col">Role</th><th scope="col">NPM</th></tr>
+          </thead>
+          <tbody>
+            <tr><th class="row-number" scope="row">01</th><td class="member-name">Andrew Budihalim</td><td>Presenter / Web Developer</td><td class="member-npm">2606749902</td></tr>
+            <tr><th class="row-number" scope="row">02</th><td class="member-name">Amelia Putri Dwiartanti</td><td>Presenter / Infographic Writer &amp; Designer</td><td class="member-npm">2606749871</td></tr>
+            <tr><th class="row-number" scope="row">03</th><td class="member-name">Ahza Arhami Hasyim</td><td>Infographic Writer &amp; Designer / Creative Director</td><td class="member-npm">2606749682</td></tr>
+            <tr><th class="row-number" scope="row">04</th><td class="member-name">Ahmad Ghofur Ibrahim</td><td>Infographic Writer &amp; Designer / Communicator</td><td class="member-npm">2606749676</td></tr>
+            <tr><th class="row-number" scope="row">05</th><td class="member-name">Angelina Yusuf</td><td>Infographic Writer &amp; Designer</td><td class="member-npm">2606749915</td></tr>
+            <tr><th class="row-number" scope="row">06</th><td class="member-name">Ajeng Asmiyana</td><td>Infographic Writer &amp; Designer / Idea Approver</td><td class="member-npm">2606749745</td></tr>
+            <tr><th class="row-number" scope="row">07</th><td class="member-name">Cezia Clevadina</td><td>Infographic Writer &amp; Designer</td><td class="member-npm">2606750330</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer">SEBUAH PERTUNJUKAN TENTANG RUMAH, <span>KEHILANGAN,</span> DAN SUARA YANG TERSISA</footer>
+  <footer class="site-footer">A SHOW ABOUT HOME, <span>LOSS,</span> AND THE VOICES THAT REMAIN</footer>
 
   <div class="modal" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
     <div class="modal-card">
-      <button class="modal-close" id="modal-close" aria-label="Tutup detail">×</button>
-      <div class="eyebrow">Catatan karakter</div>
+      <button class="modal-close" id="modal-close" aria-label="Close details">×</button>
+      <div class="eyebrow">Character notes</div>
       <h2 id="modal-title"></h2>
       <div class="modal-subtitle" id="modal-subtitle"></div>
+      <figure class="modal-image-figure" id="modal-image-figure" hidden>
+        <img id="modal-detail-image" alt="">
+        <figcaption>Korang's costume concept: a black-and-white hornbill bodysuit with yellow accents, a beak microphone, and stage costume references.</figcaption>
+      </figure>
       <p id="modal-description"></p>
     </div>
   </div>
@@ -620,36 +820,36 @@
     const animalPhotos = {
       korang: {
         url: "https://upload.wikimedia.org/wikipedia/commons/0/03/Rhinoceros_Hornbill_Portrait_-_24658208691.jpg",
-        alt: "Burung rangkong badak",
-        caption: "Rangkong badak · referensi Korang",
+        alt: "Rhinoceros hornbill",
+        caption: "Rhinoceros hornbill · Korang reference",
         credit: "C. P. Ewing · CC BY 2.0",
         source: "https://commons.wikimedia.org/wiki/File:Rhinoceros_Hornbill_Portrait_-_24658208691.jpg"
       },
       mawas: {
         url: "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
-        alt: "Harimau Sumatera",
-        caption: "Harimau Sumatera · referensi Mawas",
+        alt: "Sumatran tiger",
+        caption: "Sumatran tiger · Mawas reference",
         credit: "Monika Betley · CC BY-SA 3.0",
         source: "https://commons.wikimedia.org/wiki/File:Panthera_tigris_sumatran_subspecies.jpg"
       },
       gundul: {
         url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Orangutan_Kalimantan.jpg/960px-Orangutan_Kalimantan.jpg",
-        alt: "Orangutan Kalimantan",
-        caption: "Orangutan Kalimantan · referensi Gundul",
+        alt: "Bornean orangutan",
+        caption: "Bornean orangutan · Gundul reference",
         credit: "Ridwan0810 · CC BY-SA 4.0",
         source: "https://commons.wikimedia.org/wiki/File:Orangutan_Kalimantan.jpg"
       },
       banyu: {
         url: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Rhinoceros_sondaicus_in_London_Zoo.jpg",
-        alt: "Badak Jawa bercula satu dalam foto arsip bersejarah",
-        caption: "Badak Jawa · foto arsip bersejarah",
+        alt: "Javan rhinoceros in a historical archive photograph",
+        caption: "Javan rhinoceros · historical archive photo",
         credit: "T. Dixon · Public domain",
         source: "https://commons.wikimedia.org/wiki/File:Rhinoceros_sondaicus_in_London_Zoo.jpg"
       },
       kenny: {
         url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Brown_Rat_%28Rattus_norvegicus%29%2C_Baltasound_-_geograph.org.uk_-_6746858.jpg/960px-Brown_Rat_%28Rattus_norvegicus%29%2C_Baltasound_-_geograph.org.uk_-_6746858.jpg",
-        alt: "Tikus cokelat, digunakan sebagai referensi visual umum",
-        caption: "Tikus cokelat · referensi visual, bukan identifikasi Tikus Niken",
+        alt: "Brown rat, used as a general visual reference",
+        caption: "Brown rat · visual reference only; not a verified Niken rat",
         credit: "Mike Pennington · CC BY-SA 2.0",
         source: "https://commons.wikimedia.org/wiki/File:Brown_Rat_(Rattus_norvegicus),_Baltasound_-_geograph.org.uk_-_6746858.jpg"
       }
@@ -657,51 +857,51 @@
 
     // EDIT DATA CASTING DI SINI
     const castingData = [
-      { name: "Korang", species: "Burung Rangkong · MC", cast: "Nama Pemeran", trait: "Pembawa acara yang lincah, menghubungkan kisah dan para penghuni rimba.", detail: "Korang menjadi MC sekaligus pemandu penonton menyusuri kisah FABULA. Dari atas kanopi, ia mengamati perubahan hutan dan menyampaikan suara para satwa.", image: "Frame foto · Korang, Burung Rangkong", photo: animalPhotos.korang },
-      { name: "Mawas", species: "Harimau Sumatera", cast: "Nama Pemeran", trait: "Pelindung yang tegas dan berani berdiri di garis depan.", detail: "Mawas menggunakan keberanian dan naluri pelindungnya untuk menjaga aliansi. Saat rumah mereka terancam, ia harus menyatukan kekuatan dengan para satwa lain.", image: "Frame foto · Mawas, Harimau Sumatera", photo: animalPhotos.mawas },
-      { name: "Gundul", species: "Orangutan", cast: "Nama Pemeran", trait: "Sosok bijak yang menyimpan ikatan kuat dengan rimba.", detail: "Gundul memahami hutan sebagai rumah bagi banyak kehidupan. Ia mengajak para satwa untuk saling percaya dan mempertahankan habitat yang menyatukan mereka.", image: "Frame foto · Gundul, Orangutan", photo: animalPhotos.gundul },
-      { name: "Banyu", species: "Badak Bercula Satu", cast: "Nama Pemeran", trait: "Tenang dan teguh, saksi atas habitat yang kian menyempit.", detail: "Banyu membawa keteguhan di tengah perubahan. Kehilangan rumah membuatnya ikut berjuang bersama aliansi demi masa depan satwa dan rimba.", image: "Frame foto · Banyu, Badak Bercula Satu", photo: animalPhotos.banyu },
-      { name: "Kenny", species: "Tikus Niken · Pengkhianat", cast: "Nama Pemeran", trait: "Pengkhianat dari dalam aliansi yang membelokkan perjuangan.", detail: "Kenny, seekor Tikus Niken, mengkhianati kepercayaan aliansi. Tindakannya membuat para satwa terjebak dan menjadi korban perdagangan satwa liar ilegal.", image: "Frame foto · Kenny, Tikus Niken", photo: animalPhotos.kenny }
+      { name: "Korang", species: "Rhinoceros Hornbill · MC", cast: "Performer name", trait: "A lively host who connects the story and the forest's inhabitants.", detail: "Korang is the MC and guide who leads the audience through FABULA. From above the canopy, Korang watches the forest change and gives the animals a voice.", image: "Photo frame · Korang, rhinoceros hornbill", photo: animalPhotos.korang },
+      { name: "Mawas", species: "Sumatran Tiger", cast: "Performer name", trait: "A determined protector brave enough to stand on the front line.", detail: "Mawas relies on courage and a protector's instincts to defend the alliance. When their home is threatened, Mawas must unite with the other animals.", image: "Photo frame · Mawas, Sumatran tiger", photo: animalPhotos.mawas },
+      { name: "Gundul", species: "Orangutan", cast: "Performer name", trait: "A wise figure with a deep bond to the forest.", detail: "Gundul understands the forest as a home shared by many forms of life. Gundul urges the animals to trust one another and defend the habitat that binds them.", image: "Photo frame · Gundul, orangutan", photo: animalPhotos.gundul },
+      { name: "Banyu", species: "One-Horned Rhinoceros", cast: "Performer name", trait: "Calm and steadfast, a witness to a shrinking habitat.", detail: "Banyu remains resolute amid change. After losing a home, Banyu joins the alliance's fight for the future of wildlife and the forest.", image: "Photo frame · Banyu, one-horned rhinoceros", photo: animalPhotos.banyu },
+      { name: "Kenny", species: "Niken Rat · Traitor", cast: "Performer name", trait: "A traitor within the alliance who turns the struggle against its own.", detail: "Kenny, a Niken rat, betrays the alliance's trust. This act leaves the animals trapped and exposed to the illegal wildlife trade.", image: "Photo frame · Kenny, Niken rat", photo: animalPhotos.kenny }
     ];
 
     // EDIT DATA KOSTUM DI SINI
     const costumeData = [
-      { name: "Penjaga Kanopi", character: "Korang · Burung Rangkong · MC", category: "Satwa Endemik", materials: "Kain ringan dengan panel menyerupai bulu dan aksen warna hangat.", philosophy: "Siluet yang ringan memberi ruang pada gerak Korang sebagai MC, sementara bentuk paruh dan warna terinspirasi rangkong menjadi pengingat peran burung dalam menjaga kehidupan hutan.", image: "Frame kostum · Korang, Burung Rangkong", photo: animalPhotos.korang },
-      { name: "Bayang Sumatera", character: "Mawas · Harimau Sumatera", category: "Satwa Endemik", materials: "Kain bertekstur dengan aksen garis kontras, lapisan ringan, dan detail warna bumi.", philosophy: "Garis-garisnya terinspirasi corak harimau Sumatera, diterjemahkan menjadi gerak yang tegas untuk menggambarkan keberanian Mawas sebagai pelindung aliansi.", image: "Frame kostum · Mawas, Harimau Sumatera", photo: animalPhotos.mawas },
-      { name: "Penjaga Rimba", character: "Gundul · Orangutan", category: "Satwa Endemik", materials: "Serat bertekstur, kain berwarna tanah, dan detail rumbai terinspirasi akar serta lumut.", philosophy: "Siluet hangat dan berlapis merujuk pada kanopi hutan sebagai rumah sekaligus pelindung. Tekstur organik mencerminkan ikatan Gundul dengan rimba.", image: "Frame kostum · Gundul, Orangutan", photo: animalPhotos.gundul },
-      { name: "Jejak Rimba", character: "Banyu · Badak Bercula Satu", category: "Satwa Endemik", materials: "Kain kanvas dan bahan bertekstur kasar bernuansa tanah, dengan panel bentuk berlapis.", philosophy: "Lapisan dan bentuk yang kokoh menghadirkan keteguhan Banyu sekaligus menyinggung rapuhnya habitat yang kian menyempit.", image: "Frame kostum · Banyu, Badak Bercula Satu", photo: animalPhotos.banyu },
-      { name: "Pasar Bayangan", character: "Kenny · Tikus Niken · Pengkhianat", category: "Antagonis / Urban", materials: "Jaket berpotongan urban, tekstur sintetis, aksen metalik, dan palet hitam-neon.", philosophy: "Kontras material artifisial memisahkan Kenny dari tekstur alam. Detail industrial mencerminkan pengkhianatan dan dunia yang mengubah kehidupan menjadi barang dagangan.", image: "Frame kostum · Kenny, Tikus Niken", photo: animalPhotos.kenny }
+      { name: "Canopy Keeper", character: "Korang · Rhinoceros Hornbill · MC", category: "Endemic Wildlife", materials: "A black-and-white bodysuit with yellow accents on the head, beak, and shoes; goose-feather details; and a beak that doubles as a microphone for verbal acting.", philosophy: "The costume highlights Korang's identity as both a hornbill and an MC. The beak microphone supports verbal acting, while the feather colors and yellow accents make the character easy to recognize on stage.", image: "Costume frame · Korang, rhinoceros hornbill", photo: animalPhotos.korang, detailImage: "assets/korang-costume-concept.jpg", detailImageAlt: "Korang costume concept board: a sketch of a black-and-white hornbill bodysuit with a beak and yellow accents, alongside stage costume references." },
+      { name: "Sumatran Shadow", character: "Mawas · Sumatran Tiger", category: "Endemic Wildlife", materials: "Textured fabric with contrasting stripes, lightweight layers, and earth-toned details.", philosophy: "Inspired by the Sumatran tiger's stripes, the costume translates them into bold movement that reflects Mawas's courage as the alliance's protector.", image: "Costume frame · Mawas, Sumatran tiger", photo: animalPhotos.mawas },
+      { name: "Forest Guardian", character: "Gundul · Orangutan", category: "Endemic Wildlife", materials: "Textured fibers, earth-toned fabric, and fringe details inspired by roots and moss.", philosophy: "The warm, layered silhouette evokes the canopy as both home and shelter. Its organic textures reflect Gundul's bond with the forest.", image: "Costume frame · Gundul, orangutan", photo: animalPhotos.gundul },
+      { name: "Forest Trace", character: "Banyu · One-Horned Rhinoceros", category: "Endemic Wildlife", materials: "Canvas and rough, earth-toned textures arranged in layered panels.", philosophy: "The sturdy layers and shapes embody Banyu's resilience while hinting at the fragility of a shrinking habitat.", image: "Costume frame · Banyu, one-horned rhinoceros", photo: animalPhotos.banyu },
+      { name: "Shadow Market", character: "Kenny · Niken Rat · Traitor", category: "Antagonist / Urban", materials: "An urban-cut jacket, synthetic textures, metallic accents, and a black-and-neon palette.", philosophy: "Artificial materials set Kenny apart from the natural world. Industrial details evoke betrayal and a world that turns living beings into commodities.", image: "Costume frame · Kenny, Niken rat", photo: animalPhotos.kenny }
     ];
 
     const sceneData = {
       forest: {
-        title: "Hutan Tropis",
-        description: "Rumah yang hidup menjadi pembuka perjalanan—hangat, rimbun, dan penuh irama.",
-        visual: "Cahaya hijau keemasan menyaring kanopi; bayangan daun bergerak di lantai panggung.",
-        scent: "Kayu basah, tanah hutan, dan dedaunan segar.",
-        audio: "Musik etnik tradisional ritmis, berpadu bunyi alam.",
-        stage: "Panggung 180° frontal; fokus visual tertuju pada kesatuan para satwa.",
-        footnote: "Nuansa dibangun melalui permainan cahaya, proyeksi, dan tata suara—aroma merupakan simulasi konseptual.",
+        title: "Tropical Forest",
+        description: "A living home opens the journey—warm, lush, and full of rhythm.",
+        visual: "Golden-green light filters through the canopy; leaf shadows move across the stage floor.",
+        scent: "Wet wood, forest soil, and fresh leaves.",
+        audio: "Rhythmic traditional music blended with natural sounds.",
+        stage: "A frontal 180° stage focuses the audience on the animals' unity.",
+        footnote: "Atmosphere is created through lighting, projection, and sound design; scent is a conceptual simulation.",
         glow: "rgba(89, 128, 71, .22)"
       },
       fire: {
-        title: "Karhutla & Konflik",
-        description: "Api merambat, rumah menghilang, dan ketegangan memecah harmoni aliansi.",
-        visual: "Merah bara dan amber berdenyut di antara lapisan proyeksi asap; cahaya berubah semakin tajam.",
-        scent: "Aroma konseptual kayu terbakar dan kabut asap tipis.",
-        audio: "Perkusi intens dan ketegangan dramatis; motif etnik mulai terputus-putus.",
-        stage: "Panggung frontal mulai terbuka; perpindahan fokus menggambarkan aliansi yang terpecah.",
-        footnote: "Asap dan aroma ditampilkan sebagai simulasi artistik yang aman melalui cahaya, proyeksi, dan rancangan audio.",
+        title: "Wildfire & Conflict",
+        description: "Flames spread, home disappears, and tension fractures the alliance's harmony.",
+        visual: "Ember-red and amber light pulse through projected smoke as the lighting grows more severe.",
+        scent: "A conceptual scent of burning wood and a thin haze.",
+        audio: "Intense percussion and dramatic tension; traditional motifs begin to break apart.",
+        stage: "The frontal stage begins to open; shifting focus reflects the alliance coming apart.",
+        footnote: "Smoke and scent are safely simulated through lighting, projection, and sound design.",
         glow: "rgba(198, 70, 32, .3)"
       },
       market: {
-        title: "Pasar Gelap & Perkotaan",
-        description: "Di ujung perjalanan, para satwa terkurung dalam dunia neon yang bising dan dingin.",
-        visual: "Neon biru-ungu, siluet jeruji, dan bayangan kota menggantikan warna hutan.",
-        scent: "Aroma konseptual asap kendaraan perkotaan, logam, dan hiruk-pikuk pasar.",
-        audio: "Phonk beats modern yang menghentak, bertabrakan dengan gema motif tradisional.",
-        stage: "Panggung 360° mengelilingi penonton; rasa terkurung hadir dari segala arah.",
-        footnote: "Adegan berakhir dalam ruang bunyi dan cahaya yang rapat; aroma merupakan deskripsi konsep, bukan emisi nyata.",
+        title: "Black Market & City",
+        description: "At the journey's end, the animals are caged in a noisy, cold neon world.",
+        visual: "Blue-violet neon, cage-bar silhouettes, and city shadows replace the forest.",
+        scent: "A conceptual scent of urban traffic fumes, metal, and a bustling market.",
+        audio: "Driving modern phonk beats collide with echoes of traditional motifs.",
+        stage: "A 360° stage surrounds the audience; confinement is felt from every direction.",
+        footnote: "The scene closes in a dense world of sound and light; scent is a concept, not a real emission.",
         glow: "rgba(72, 83, 171, .3)"
       }
     };
@@ -744,13 +944,24 @@
     const modalTitle = document.getElementById("modal-title");
     const modalSubtitle = document.getElementById("modal-subtitle");
     const modalDescription = document.getElementById("modal-description");
+    const modalImageFigure = document.getElementById("modal-image-figure");
+    const modalDetailImage = document.getElementById("modal-detail-image");
     let previousFocus = null;
 
-    function openModal(title, subtitle, description) {
+    function openModal(title, subtitle, description, detailImage = null) {
       previousFocus = document.activeElement;
       modalTitle.textContent = title;
       modalSubtitle.textContent = subtitle;
       modalDescription.textContent = description;
+      if (detailImage) {
+        modalDetailImage.src = detailImage.src;
+        modalDetailImage.alt = detailImage.alt;
+        modalImageFigure.hidden = false;
+      } else {
+        modalDetailImage.removeAttribute("src");
+        modalDetailImage.alt = "";
+        modalImageFigure.hidden = true;
+      }
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -789,13 +1000,13 @@
       credit.target = "_blank";
       credit.rel = "noopener noreferrer";
       credit.textContent = photo.credit;
-      credit.setAttribute("aria-label", "Sumber foto dan lisensi: " + photo.credit);
+      credit.setAttribute("aria-label", "Photo source and license: " + photo.credit);
 
       image.addEventListener("error", () => {
         frame.classList.remove("has-photo");
         image.remove();
         caption.classList.remove("photo-caption");
-        caption.textContent = fallbackLabel + " · foto tidak tersedia";
+        caption.textContent = fallbackLabel + " · photo unavailable";
         credit.remove();
       }, { once: true });
 
@@ -807,7 +1018,7 @@
     castingData.forEach(character => {
       const card = document.createElement("article");
       card.className = "profile-card";
-      card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info"><h3></h3><div class="cast-name"></div><p></p><button class="text-button">LIHAT DETAIL →</button></div>';
+      card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info"><h3></h3><div class="cast-name"></div><p></p><button class="text-button">VIEW DETAILS →</button></div>';
       addAnimalPhoto(card.querySelector(".image-frame"), character.photo, character.image);
       card.querySelector("h3").textContent = character.species;
       card.querySelector(".cast-name").textContent = character.name + " · " + character.cast;
@@ -819,18 +1030,23 @@
     const costumeGrid = document.getElementById("costume-grid");
     function renderCostumes(filter) {
       costumeGrid.replaceChildren();
-      costumeData.filter(item => filter === "Semua" || item.category === filter).forEach(item => {
+      costumeData.filter(item => filter === "All" || item.category === filter).forEach(item => {
         const card = document.createElement("article");
         card.className = "costume-card";
         card.tabIndex = 0;
         card.setAttribute("role", "button");
-        card.setAttribute("aria-label", "Detail kostum " + item.name);
-        card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info costume-info"><div class="costume-meta"><span></span><span>Detail ↗</span></div><h3></h3><p></p></div>';
+        card.setAttribute("aria-label", "Costume details: " + item.name);
+        card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info costume-info"><div class="costume-meta"><span></span><span>Details ↗</span></div><h3></h3><p></p></div>';
         addAnimalPhoto(card.querySelector(".image-frame"), item.photo, item.image);
         card.querySelector(".costume-meta span").textContent = item.category;
         card.querySelector("h3").textContent = item.name;
         card.querySelector(".costume-info p").textContent = item.character;
-        const showCostume = () => openModal(item.name, item.character + " · " + item.category, "Material: " + item.materials + "\n\nFilosofi: " + item.philosophy);
+        const showCostume = () => openModal(
+          item.name,
+          item.character + " · " + item.category,
+          "Materials: " + item.materials + "\n\nDesign concept: " + item.philosophy,
+          item.detailImage ? { src: item.detailImage, alt: item.detailImageAlt } : null
+        );
         card.addEventListener("click", showCostume);
         card.addEventListener("keydown", event => {
           if (event.key === "Enter" || event.key === " ") {
@@ -841,7 +1057,7 @@
         costumeGrid.appendChild(card);
       });
     }
-    renderCostumes("Semua");
+    renderCostumes("All");
     document.querySelectorAll(".filter-button").forEach(button => button.addEventListener("click", () => {
       document.querySelectorAll(".filter-button").forEach(item => item.classList.toggle("active", item === button));
       renderCostumes(button.dataset.filter);
@@ -870,19 +1086,71 @@
       });
     }));
 
+    const stageMotifs = {
+      korang: {
+        title: "Korang · Hornbill-call motif",
+        description: "A bright hornbill-call phrase rides above syncopated hand drums, introducing the forest."
+      },
+      mawas: {
+        title: "Mawas · Sumatran tiger motif",
+        description: "Low frame drums and a breathy bamboo-flute line create a grounded, watchful pulse for the tiger."
+      },
+      gundul: {
+        title: "Gundul · Orangutan motif",
+        description: "Interlocking hand drums and seed shakers build a warm, agile rhythm for the orangutan."
+      },
+      banyu: {
+        title: "Banyu · One-horned rhino motif",
+        description: "A deep gong and sustained bowed-bass tones give the one-horned rhino a slow, resonant presence."
+      },
+      kenny: {
+        title: "Kenny · Traitor's motif",
+        description: "Dry woodblock clicks slip into a clipped electronic pulse, foreshadowing betrayal before the ending."
+      }
+    };
+    const stageVisual = document.getElementById("stage-visual");
+    const stageScoreTitle = document.getElementById("stage-score-title");
+    const stageScoreDescription = document.getElementById("stage-score-description");
+    let selectedStageCharacter = "korang";
+
+    document.querySelectorAll(".stage-zone").forEach(button => button.addEventListener("click", () => {
+      const motif = stageMotifs[button.dataset.character];
+      if (!motif) return;
+      selectedStageCharacter = button.dataset.character;
+      stageScoreTitle.textContent = motif.title;
+      stageScoreDescription.textContent = motif.description;
+      document.querySelectorAll(".stage-zone").forEach(item => {
+        const active = item === button;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+    }));
+
     document.querySelectorAll(".stage-controls button").forEach(button => button.addEventListener("click", () => {
       const fullCircle = button.dataset.angle === "360";
-      document.getElementById("stage-orbit").style.transform = fullCircle ? "scale(1.13) rotate(35deg)" : "scale(.92) rotate(0deg)";
-      document.getElementById("stage-caption").textContent = fullCircle ? "PERSPEKTIF MELINGKAR" : "PERSPEKTIF FRONTAL";
-      document.getElementById("stage-audience").textContent = fullCircle ? "PENONTON · 360°" : "PENONTON · 180°";
+      stageVisual.dataset.angle = fullCircle ? "360" : "180";
+      document.getElementById("stage-caption").textContent = fullCircle
+        ? "ONE SHARED SCORE · 360°"
+        : "FIVE ANIMAL STAGES · 180°";
+      document.getElementById("stage-audience").textContent = fullCircle
+        ? "AUDIENCE AROUND THE STAGE · 360°"
+        : "AUDIENCE · FRONTAL 180°";
       document.querySelectorAll(".stage-controls button").forEach(item => {
         const active = item === button;
         item.classList.toggle("active", active);
         item.setAttribute("aria-pressed", String(active));
       });
-      document.getElementById("sense-stage").textContent = fullCircle
-        ? "Panggung melingkar 360°; penonton mengelilingi ruang dan menyaksikan perubahan dari segala arah."
-        : "Panggung frontal 180°; fokus visual tertuju pada kesatuan para satwa.";
+
+      if (fullCircle) {
+        stageScoreTitle.textContent = "Final climax · one shared score";
+        stageScoreDescription.textContent = "The distinct motifs of Korang, Mawas, Gundul, Banyu, and Kenny converge at the center as the audience surrounds the circular stage.";
+        document.getElementById("sense-stage").textContent = "Five animal stages converge into one shared score at the center of the circular 360° stage for the final climax.";
+      } else {
+        const motif = stageMotifs[selectedStageCharacter];
+        stageScoreTitle.textContent = motif.title;
+        stageScoreDescription.textContent = motif.description;
+        document.getElementById("sense-stage").textContent = "Five separate animal stages form a frontal 180° semicircle, each with its own musical motif.";
+      }
     }));
   </script>
 </body>
