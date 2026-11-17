@@ -304,6 +304,38 @@
     }
     .image-frame::after { position:absolute; inset:12px; border:1px solid rgba(212,175,55,.22); content:""; pointer-events:none; }
     .image-frame span { z-index:1; padding: 10px; font-size: 9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+    .image-frame.has-photo { background:#211a17; }
+    .animal-photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.87; }
+    .image-frame .photo-caption {
+      position:absolute;
+      z-index:2;
+      right:15px;
+      bottom:31px;
+      left:15px;
+      padding:6px 8px;
+      color:var(--cream);
+      background:rgba(20,15,13,.76);
+      font-size:8px;
+      letter-spacing:.08em;
+      line-height:1.4;
+      text-align:center;
+    }
+    .image-frame .photo-credit {
+      position:absolute;
+      z-index:3;
+      right:15px;
+      bottom:13px;
+      left:15px;
+      overflow:hidden;
+      color:#efcf64;
+      font-size:7px;
+      letter-spacing:.06em;
+      text-align:center;
+      text-decoration:none;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .image-frame .photo-credit:hover { text-decoration:underline; }
     .editorial-copy { padding: 23px 24px; }
     .editorial-copy h3 { margin: 0 0 10px; color: var(--gold); font: 500 16px "Cinzel",Georgia,serif; letter-spacing:.1em; }
     .editorial-copy p { margin: 0; color: #c9bdae; font-size: 12px; line-height: 1.85; }
@@ -585,24 +617,60 @@
   </div>
 
   <script>
+    const animalPhotos = {
+      korang: {
+        url: "https://upload.wikimedia.org/wikipedia/commons/0/03/Rhinoceros_Hornbill_Portrait_-_24658208691.jpg",
+        alt: "Burung rangkong badak",
+        caption: "Rangkong badak · referensi Korang",
+        credit: "C. P. Ewing · CC BY 2.0",
+        source: "https://commons.wikimedia.org/wiki/File:Rhinoceros_Hornbill_Portrait_-_24658208691.jpg"
+      },
+      mawas: {
+        url: "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
+        alt: "Harimau Sumatera",
+        caption: "Harimau Sumatera · referensi Mawas",
+        credit: "Monika Betley · CC BY-SA 3.0",
+        source: "https://commons.wikimedia.org/wiki/File:Panthera_tigris_sumatran_subspecies.jpg"
+      },
+      gundul: {
+        url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Orangutan_Kalimantan.jpg/960px-Orangutan_Kalimantan.jpg",
+        alt: "Orangutan Kalimantan",
+        caption: "Orangutan Kalimantan · referensi Gundul",
+        credit: "Ridwan0810 · CC BY-SA 4.0",
+        source: "https://commons.wikimedia.org/wiki/File:Orangutan_Kalimantan.jpg"
+      },
+      banyu: {
+        url: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Rhinoceros_sondaicus_in_London_Zoo.jpg",
+        alt: "Badak Jawa bercula satu dalam foto arsip bersejarah",
+        caption: "Badak Jawa · foto arsip bersejarah",
+        credit: "T. Dixon · Public domain",
+        source: "https://commons.wikimedia.org/wiki/File:Rhinoceros_sondaicus_in_London_Zoo.jpg"
+      },
+      kenny: {
+        url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Brown_Rat_%28Rattus_norvegicus%29%2C_Baltasound_-_geograph.org.uk_-_6746858.jpg/960px-Brown_Rat_%28Rattus_norvegicus%29%2C_Baltasound_-_geograph.org.uk_-_6746858.jpg",
+        alt: "Tikus cokelat, digunakan sebagai referensi visual umum",
+        caption: "Tikus cokelat · referensi visual, bukan identifikasi Tikus Niken",
+        credit: "Mike Pennington · CC BY-SA 2.0",
+        source: "https://commons.wikimedia.org/wiki/File:Brown_Rat_(Rattus_norvegicus),_Baltasound_-_geograph.org.uk_-_6746858.jpg"
+      }
+    };
+
     // EDIT DATA CASTING DI SINI
     const castingData = [
-      { name: "Raka", species: "Orangutan", cast: "Nama Pemeran", trait: "Penjaga hutan yang bijak, berani, dan menyatukan aliansi.", detail: "Raka menyimpan ingatan tentang rimba sebelum api datang. Ia percaya setiap makhluk punya tempat dan suara, lalu mengajak para satwa mempertahankan rumah mereka bersama-sama.", image: "Frame foto · Orangutan" },
-      { name: "Gara", species: "Harimau Sumatera", cast: "Nama Pemeran", trait: "Pelindung yang tegas dengan naluri pemimpin.", detail: "Gara bergerak di antara amarah dan tanggung jawab. Kekuatan dan keberaniannya menjadi perisai aliansi, tetapi ia harus belajar bahwa perlindungan bukan berarti berjuang sendirian.", image: "Frame foto · Harimau Sumatera" },
-      { name: "Banyu", species: "Badak Sumatera", cast: "Nama Pemeran", trait: "Sosok tenang yang memegang kenangan rimba.", detail: "Banyu adalah saksi sunyi atas habitat yang terus menyempit. Keteguhannya mengingatkan kelompok bahwa kehilangan satu bagian hutan dapat mengubah hidup seluruh penghuni.", image: "Frame foto · Badak Sumatera" },
-      { name: "Laras", species: "Gajah Sumatera", cast: "Nama Pemeran", trait: "Peka dan penuh empati, penjaga ikatan kelompok.", detail: "Laras membawa suara yang lembut namun tak mudah dipatahkan. Ia merawat ikatan di antara para satwa ketika ketakutan dan perbedaan mulai mengancam persatuan mereka.", image: "Frame foto · Gajah Sumatera" },
-      { name: "Suri", species: "Rangkong", cast: "Nama Pemeran", trait: "Pengamat lincah yang menjadi mata dari atas kanopi.", detail: "Suri selalu melihat tanda-tanda perubahan lebih dulu. Ia membawa kabar dari balik pepohonan dan percaya bahwa kewaspadaan dapat menyelamatkan aliansi.", image: "Frame foto · Rangkong" },
-      { name: "Sang Kolektor", species: "Antagonis · Pengkhianat", cast: "Nama Pemeran", trait: "Ambisius, manipulatif, dan menjual kepercayaan.", detail: "Di balik janji keselamatan, Sang Kolektor melihat hutan sebagai komoditas. Pengkhianatannya membalikkan perjuangan aliansi dan menyeret mereka ke pasar hewan ilegal.", image: "Frame foto · Antagonis urban" }
+      { name: "Korang", species: "Burung Rangkong · MC", cast: "Nama Pemeran", trait: "Pembawa acara yang lincah, menghubungkan kisah dan para penghuni rimba.", detail: "Korang menjadi MC sekaligus pemandu penonton menyusuri kisah FABULA. Dari atas kanopi, ia mengamati perubahan hutan dan menyampaikan suara para satwa.", image: "Frame foto · Korang, Burung Rangkong", photo: animalPhotos.korang },
+      { name: "Mawas", species: "Harimau Sumatera", cast: "Nama Pemeran", trait: "Pelindung yang tegas dan berani berdiri di garis depan.", detail: "Mawas menggunakan keberanian dan naluri pelindungnya untuk menjaga aliansi. Saat rumah mereka terancam, ia harus menyatukan kekuatan dengan para satwa lain.", image: "Frame foto · Mawas, Harimau Sumatera", photo: animalPhotos.mawas },
+      { name: "Gundul", species: "Orangutan", cast: "Nama Pemeran", trait: "Sosok bijak yang menyimpan ikatan kuat dengan rimba.", detail: "Gundul memahami hutan sebagai rumah bagi banyak kehidupan. Ia mengajak para satwa untuk saling percaya dan mempertahankan habitat yang menyatukan mereka.", image: "Frame foto · Gundul, Orangutan", photo: animalPhotos.gundul },
+      { name: "Banyu", species: "Badak Bercula Satu", cast: "Nama Pemeran", trait: "Tenang dan teguh, saksi atas habitat yang kian menyempit.", detail: "Banyu membawa keteguhan di tengah perubahan. Kehilangan rumah membuatnya ikut berjuang bersama aliansi demi masa depan satwa dan rimba.", image: "Frame foto · Banyu, Badak Bercula Satu", photo: animalPhotos.banyu },
+      { name: "Kenny", species: "Tikus Niken · Pengkhianat", cast: "Nama Pemeran", trait: "Pengkhianat dari dalam aliansi yang membelokkan perjuangan.", detail: "Kenny, seekor Tikus Niken, mengkhianati kepercayaan aliansi. Tindakannya membuat para satwa terjebak dan menjadi korban perdagangan satwa liar ilegal.", image: "Frame foto · Kenny, Tikus Niken", photo: animalPhotos.kenny }
     ];
 
     // EDIT DATA KOSTUM DI SINI
     const costumeData = [
-      { name: "Penjaga Kanopi", character: "Orangutan · Raka", category: "Satwa Endemik", materials: "Serat bertekstur, kain berwarna tanah, dan detail rumbai terinspirasi akar serta lumut.", philosophy: "Siluet hangat dan berlapis merujuk pada kanopi hutan sebagai rumah sekaligus pelindung. Tekstur organik mengingatkan bahwa tubuh dan habitat saling terhubung.", image: "Frame kostum · Penjaga kanopi" },
-      { name: "Bayang Sumatera", character: "Harimau · Gara", category: "Satwa Endemik", materials: "Kain bertekstur dengan aksen garis kontras, lapisan ringan, dan detail warna bumi.", philosophy: "Garis-garisnya terinspirasi corak harimau Sumatera, diterjemahkan menjadi gerak yang tegas agar kekuatan karakter terasa tanpa kehilangan kedekatannya dengan alam.", image: "Frame kostum · Harimau Sumatera" },
-      { name: "Jejak Rimba", character: "Badak · Banyu", category: "Satwa Endemik", materials: "Kain kanvas dan bahan bertekstur kasar bernuansa tanah, dengan panel bentuk berlapis.", philosophy: "Lapisan dan bentuk yang kokoh menghadirkan ketahanan badak sekaligus menyinggung rapuhnya habitat yang kian terfragmentasi.", image: "Frame kostum · Badak Sumatera" },
-      { name: "Penerbang Rimba", character: "Rangkong · Suri", category: "Satwa Endemik", materials: "Kain ringan dengan panel menyerupai bulu dan aksen warna hangat.", philosophy: "Siluet yang ringan memberi ruang pada gerak, sementara bentuk paruh dan warna terinspirasi rangkong menjadi pengingat peran burung dalam menjaga kehidupan hutan.", image: "Frame kostum · Rangkong" },
-      { name: "Pasar Bayangan", character: "Sang Kolektor", category: "Antagonis / Urban", materials: "Jaket berpotongan urban, tekstur sintetis, aksen metalik, dan palet hitam-neon.", philosophy: "Kontras material artifisial memisahkan antagonis dari tekstur alam. Detail industrial mencerminkan dunia yang mengubah kehidupan menjadi barang dagangan.", image: "Frame kostum · Urban gelap" },
-      { name: "Kandang Kota", character: "Ensemble · Pasar gelap", category: "Antagonis / Urban", materials: "Lapisan kain gelap, detail garis seperti jeruji, dan aksesori metalik ringan.", philosophy: "Motif garis membingkai tubuh seperti ruang kurungan. Kostum ensemble menyatukan suasana pasar gelap tanpa menghapus identitas tiap karakter.", image: "Frame kostum · Ensemble urban" }
+      { name: "Penjaga Kanopi", character: "Korang · Burung Rangkong · MC", category: "Satwa Endemik", materials: "Kain ringan dengan panel menyerupai bulu dan aksen warna hangat.", philosophy: "Siluet yang ringan memberi ruang pada gerak Korang sebagai MC, sementara bentuk paruh dan warna terinspirasi rangkong menjadi pengingat peran burung dalam menjaga kehidupan hutan.", image: "Frame kostum · Korang, Burung Rangkong", photo: animalPhotos.korang },
+      { name: "Bayang Sumatera", character: "Mawas · Harimau Sumatera", category: "Satwa Endemik", materials: "Kain bertekstur dengan aksen garis kontras, lapisan ringan, dan detail warna bumi.", philosophy: "Garis-garisnya terinspirasi corak harimau Sumatera, diterjemahkan menjadi gerak yang tegas untuk menggambarkan keberanian Mawas sebagai pelindung aliansi.", image: "Frame kostum · Mawas, Harimau Sumatera", photo: animalPhotos.mawas },
+      { name: "Penjaga Rimba", character: "Gundul · Orangutan", category: "Satwa Endemik", materials: "Serat bertekstur, kain berwarna tanah, dan detail rumbai terinspirasi akar serta lumut.", philosophy: "Siluet hangat dan berlapis merujuk pada kanopi hutan sebagai rumah sekaligus pelindung. Tekstur organik mencerminkan ikatan Gundul dengan rimba.", image: "Frame kostum · Gundul, Orangutan", photo: animalPhotos.gundul },
+      { name: "Jejak Rimba", character: "Banyu · Badak Bercula Satu", category: "Satwa Endemik", materials: "Kain kanvas dan bahan bertekstur kasar bernuansa tanah, dengan panel bentuk berlapis.", philosophy: "Lapisan dan bentuk yang kokoh menghadirkan keteguhan Banyu sekaligus menyinggung rapuhnya habitat yang kian menyempit.", image: "Frame kostum · Banyu, Badak Bercula Satu", photo: animalPhotos.banyu },
+      { name: "Pasar Bayangan", character: "Kenny · Tikus Niken · Pengkhianat", category: "Antagonis / Urban", materials: "Jaket berpotongan urban, tekstur sintetis, aksen metalik, dan palet hitam-neon.", philosophy: "Kontras material artifisial memisahkan Kenny dari tekstur alam. Detail industrial mencerminkan pengkhianatan dan dunia yang mengubah kehidupan menjadi barang dagangan.", image: "Frame kostum · Kenny, Tikus Niken", photo: animalPhotos.kenny }
     ];
 
     const sceneData = {
@@ -698,12 +766,49 @@
     modal.addEventListener("click", event => { if (event.target === modal) closeModal(); });
     document.addEventListener("keydown", event => { if (event.key === "Escape" && modal.classList.contains("open")) closeModal(); });
 
+    function addAnimalPhoto(frame, photo, fallbackLabel) {
+      if (!photo) {
+        frame.querySelector("span").textContent = fallbackLabel;
+        return;
+      }
+
+      const image = document.createElement("img");
+      image.className = "animal-photo";
+      image.src = photo.url;
+      image.alt = photo.alt;
+      image.loading = "lazy";
+      image.decoding = "async";
+
+      const caption = document.createElement("span");
+      caption.className = "photo-caption";
+      caption.textContent = photo.caption;
+
+      const credit = document.createElement("a");
+      credit.className = "photo-credit";
+      credit.href = photo.source;
+      credit.target = "_blank";
+      credit.rel = "noopener noreferrer";
+      credit.textContent = photo.credit;
+      credit.setAttribute("aria-label", "Sumber foto dan lisensi: " + photo.credit);
+
+      image.addEventListener("error", () => {
+        frame.classList.remove("has-photo");
+        image.remove();
+        caption.classList.remove("photo-caption");
+        caption.textContent = fallbackLabel + " · foto tidak tersedia";
+        credit.remove();
+      }, { once: true });
+
+      frame.classList.add("has-photo");
+      frame.replaceChildren(image, caption, credit);
+    }
+
     const castingGrid = document.getElementById("casting-grid");
     castingData.forEach(character => {
       const card = document.createElement("article");
       card.className = "profile-card";
       card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info"><h3></h3><div class="cast-name"></div><p></p><button class="text-button">LIHAT DETAIL →</button></div>';
-      card.querySelector(".image-frame span").textContent = character.image;
+      addAnimalPhoto(card.querySelector(".image-frame"), character.photo, character.image);
       card.querySelector("h3").textContent = character.species;
       card.querySelector(".cast-name").textContent = character.name + " · " + character.cast;
       card.querySelector(".profile-info p").textContent = character.trait;
@@ -721,7 +826,7 @@
         card.setAttribute("role", "button");
         card.setAttribute("aria-label", "Detail kostum " + item.name);
         card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info costume-info"><div class="costume-meta"><span></span><span>Detail ↗</span></div><h3></h3><p></p></div>';
-        card.querySelector(".image-frame span").textContent = item.image;
+        addAnimalPhoto(card.querySelector(".image-frame"), item.photo, item.image);
         card.querySelector(".costume-meta span").textContent = item.category;
         card.querySelector("h3").textContent = item.name;
         card.querySelector(".costume-info p").textContent = item.character;
