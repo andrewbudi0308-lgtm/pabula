@@ -1,2 +1,0 @@
-# pabula
-ranggawisaranggawisesakaprodikami
