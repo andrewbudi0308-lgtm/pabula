@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1412">
+  <meta name="description" content="FABULA — drama musikal tentang krisis iklim, satwa endemik Indonesia, dan harga dari sebuah pengkhianatan.">
+  <title>FABULA — A Musical in the Wild</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1412;
+      --panel: #211a17;
+      --panel-soft: #2b211b;
+      --cream: #f5efe6;
+      --muted: #b7a99a;
+      --gold: #d4af37;
+      --gold-dark: #aa7c11;
+      --line: rgba(212, 175, 55, .22);
+      --scene-glow: rgba(89, 128, 71, .18);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--cream);
+      background:
+        radial-gradient(ellipse at 50% -20%, rgba(119, 72, 35, .18), transparent 55%),
+        var(--ink);
+      font-family: "DM Sans", sans-serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      pointer-events: none;
+      content: "";
+      opacity: .14;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+    }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    .serif { font-family: "Cinzel", Georgia, serif; }
+    .gold-text {
+      color: var(--gold);
+      background: linear-gradient(110deg, #f3df8a 10%, #d4af37 48%, #aa7c11 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(212, 175, 55, .15);
+      background: rgba(26, 20, 18, .86);
+      backdrop-filter: blur(18px);
+    }
+    .header-inner {
+      width: min(1200px, calc(100% - 48px));
+      min-height: 76px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      flex-direction: column;
+      color: var(--cream);
+      text-decoration: none;
+      line-height: 1;
+      letter-spacing: .2em;
+      font: 600 19px "Cinzel", Georgia, serif;
+    }
+    .brand small {
+      margin-top: 6px;
+      color: var(--gold);
+      font: 600 8px "DM Sans", sans-serif;
+      letter-spacing: .26em;
+    }
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .nav-tab {
+      position: relative;
+      border: 0;
+      padding: 11px 13px;
+      color: #b7a99a;
+      background: transparent;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      transition: color .25s ease;
+    }
+    .nav-tab::after {
+      position: absolute;
+      right: 13px;
+      bottom: 3px;
+      left: 13px;
+      height: 1px;
+      content: "";
+      transform: scaleX(0);
+      transform-origin: left;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      transition: transform .3s ease;
+    }
+    .nav-tab:hover, .nav-tab[aria-selected="true"] { color: var(--gold); }
+    .nav-tab[aria-selected="true"]::after { transform: scaleX(1); }
+    main { min-height: calc(100vh - 76px); }
+    .page {
+      display: none;
+      width: min(1200px, calc(100% - 48px));
+      min-height: 75vh;
+      margin: 0 auto;
+      padding: 68px 0 100px;
+      animation: page-in .65s cubic-bezier(.2,.7,.2,1) both;
+    }
+    .page.active { display: block; }
+    @keyframes page-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 28px; height: 1px; content: ""; background: var(--gold-dark); }
+    .section-heading {
+      margin: 15px 0 12px;
+      font: 500 clamp(31px, 5vw, 52px)/1.12 "Cinzel", Georgia, serif;
+      letter-spacing: .025em;
+    }
+    .section-intro { max-width: 650px; color: var(--muted); line-height: 1.8; }
+    .hero {
+      position: relative;
+      min-height: 680px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid rgba(212,175,55,.18);
+      background:
+        linear-gradient(180deg, rgba(20,15,13,.1) 0%, rgba(20,15,13,.32) 35%, #1a1412 100%),
+        radial-gradient(ellipse at 50% 9%, rgba(255,209,111,.42), transparent 20%),
+        radial-gradient(ellipse at 50% 0%, rgba(168,105,43,.4), transparent 40%),
+        linear-gradient(120deg, #17231a 0%, #38251a 48%, #171311 100%);
+    }
+    .hero::before, .hero::after {
+      position: absolute;
+      top: -18%;
+      width: 44%;
+      height: 68%;
+      content: "";
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(245,207,129,.19), transparent 72%);
+      filter: blur(14px);
+    }
+    .hero::before { left: 9%; transform: rotate(24deg); }
+    .hero::after { right: 9%; transform: rotate(-24deg); }
+    .curtain {
+      position: absolute;
+      z-index: 1;
+      top: -20px;
+      bottom: 8%;
+      width: 12%;
+      opacity: .82;
+      background: repeating-linear-gradient(90deg, #351614 0, #511e19 16px, #2b1211 32px, #4a1916 48px);
+      box-shadow: inset -18px 0 22px rgba(0,0,0,.4), 10px 0 40px rgba(0,0,0,.25);
+    }
+    .curtain.left { left: 0; border-right: 1px solid rgba(212,175,55,.35); }
+    .curtain.right { right: 0; transform: scaleX(-1); border-right: 1px solid rgba(212,175,55,.35); }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: min(780px, 84%);
+      padding: 50px 20px;
+      text-align: center;
+    }
+    .hero-kicker {
+      color: #e5ce91;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      margin: 20px 0 12px;
+      font: 500 clamp(72px, 15vw, 170px)/.95 "Cinzel", Georgia, serif;
+      letter-spacing: .1em;
+      text-shadow: 0 8px 55px rgba(0,0,0,.6);
+    }
+    .hero-title span {
+      display: block;
+      margin-top: 19px;
+      color: #e3c765;
+      font: 600 10px "DM Sans", sans-serif;
+      letter-spacing: .48em;
+    }
+    .hero-copy {
+      max-width: 560px;
+      margin: 24px auto 29px;
+      color: #e1d7c7;
+      font-size: clamp(14px, 2vw, 17px);
+      line-height: 1.8;
+    }
+    .outline-button, .gold-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 46px;
+      border: 1px solid var(--gold);
+      padding: 0 19px;
+      color: var(--gold);
+      background: rgba(26,20,18,.35);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-decoration: none;
+      transition: color .25s, background .25s, transform .25s;
+    }
+    .outline-button:hover { color: var(--ink); background: var(--gold); transform: translateY(-2px); }
+    .gold-button { color: var(--ink); background: linear-gradient(110deg, #e8cf71, #b78a20); }
+    .gold-button:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,175,55,.18); }
+    .hero-note {
+      position: absolute;
+      right: 28px;
+      bottom: 24px;
+      left: 28px;
+      display: flex;
+      justify-content: space-between;
+      color: rgba(245,239,230,.58);
+      font-size: 9px;
+      letter-spacing: .19em;
+      text-transform: uppercase;
+    }
+    .shortcut-section { padding-top: 75px; }
+    .shortcut-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+    .shortcut-head h2 { margin: 0; font: 500 clamp(23px,3vw,32px) "Cinzel", Georgia, serif; }
+    .shortcut-head p { margin: 0; color: var(--muted); font-size: 12px; }
+    .shortcut-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+    .shortcut-card {
+      position: relative;
+      min-height: 190px;
+      border: 1px solid var(--line);
+      padding: 22px;
+      color: var(--cream);
+      background: linear-gradient(145deg, rgba(74,53,37,.48), rgba(33,26,23,.9));
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .3s, transform .3s, background .3s;
+    }
+    .shortcut-card:hover { transform: translateY(-5px); border-color: var(--gold); background: linear-gradient(145deg, rgba(100,70,42,.58), rgba(33,26,23,.95)); }
+    .shortcut-icon { display: block; margin-bottom: 25px; color: var(--gold); font-size: 23px; }
+    .shortcut-card strong { display: block; margin-bottom: 7px; font: 500 15px "Cinzel", Georgia, serif; letter-spacing: .08em; }
+    .shortcut-card span:last-child { color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .editorial-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 18px;
+      margin-top: 40px;
+    }
+    .editorial-card {
+      display: grid;
+      grid-template-columns: minmax(130px,.72fr) 1.28fr;
+      min-height: 210px;
+      border: 1px solid var(--line);
+      background: rgba(33,26,23,.76);
+    }
+    .editorial-card.wide { grid-column: 1 / -1; grid-template-columns: 1fr 1.6fr; }
+    .image-frame {
+      position: relative;
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 8px solid #34271e;
+      outline: 1px solid rgba(212,175,55,.42);
+      outline-offset: -5px;
+      color: rgba(245,239,230,.62);
+      background:
+        radial-gradient(ellipse at 50% 35%, rgba(212,175,55,.22), transparent 30%),
+        linear-gradient(140deg, #3e3426, #182019 55%, #251a16);
+      text-align: center;
+    }
+    .image-frame::after { position:absolute; inset:12px; border:1px solid rgba(212,175,55,.22); content:""; pointer-events:none; }
+    .image-frame span { z-index:1; padding: 10px; font-size: 9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+    .editorial-copy { padding: 23px 24px; }
+    .editorial-copy h3 { margin: 0 0 10px; color: var(--gold); font: 500 16px "Cinzel",Georgia,serif; letter-spacing:.1em; }
+    .editorial-copy p { margin: 0; color: #c9bdae; font-size: 12px; line-height: 1.85; }
+    .card-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:17px; margin-top:38px; }
+    .profile-card, .costume-card {
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:rgba(33,26,23,.82);
+      transition:transform .28s,border-color .28s;
+    }
+    .profile-card:hover, .costume-card:hover { transform:translateY(-4px); border-color:rgba(212,175,55,.68); }
+    .profile-card .image-frame, .costume-card .image-frame { min-height:235px; border-width:10px; }
+    .profile-info { padding:18px 19px 20px; }
+    .profile-info h3 { margin:0 0 4px; font:500 17px "Cinzel",Georgia,serif; }
+    .profile-info .cast-name { color:var(--gold); font-size:11px; }
+    .profile-info p { min-height:36px; margin:11px 0 14px; color:var(--muted); font-size:11px; line-height:1.6; }
+    .text-button { border:0; padding:0; color:var(--gold); background:none; cursor:pointer; font-size:10px; font-weight:700; letter-spacing:.13em; }
+    .filter-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:27px; }
+    .filter-button {
+      border:1px solid rgba(212,175,55,.25);
+      padding:9px 14px;
+      color:var(--muted);
+      background:transparent;
+      cursor:pointer;
+      font-size:10px;
+      letter-spacing:.08em;
+      transition:all .2s;
+    }
+    .filter-button.active, .filter-button:hover { border-color:var(--gold); color:var(--ink); background:var(--gold); }
+    .costume-card { cursor:pointer; }
+    .costume-meta { display:flex; justify-content:space-between; gap:10px; margin-bottom:9px; color:var(--gold); font-size:9px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; }
+    .costume-info h3 { margin:0; font:500 16px "Cinzel",Georgia,serif; }
+    .costume-info p { margin:9px 0 0; color:var(--muted); font-size:11px; line-height:1.65; }
+    .tech-layout { display:grid; grid-template-columns:1fr .9fr; gap:22px; margin-top:38px; }
+    .tech-panel { border:1px solid var(--line); background:rgba(33,26,23,.8); }
+    .tech-panel-head { padding:22px 24px 0; }
+    .tech-panel-head h3 { margin:0; font:500 18px "Cinzel",Georgia,serif; }
+    .tech-panel-head p { margin:8px 0 0; color:var(--muted); font-size:11px; line-height:1.7; }
+    .stage-box {
+      position:relative;
+      min-height:295px;
+      margin:20px;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      border:1px solid rgba(212,175,55,.2);
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(212,175,55,.13), transparent 36%),
+        linear-gradient(145deg, #1d2920, #211814);
+    }
+    .stage-box::before { position:absolute; inset:0; content:""; opacity:.6; background:radial-gradient(ellipse at 50% 0%,var(--scene-glow),transparent 60%); transition:background .6s; }
+    .stage-orbit { position:relative; width:215px; height:215px; display:grid; place-items:center; border:1px dashed rgba(212,175,55,.35); border-radius:50%; transition:transform .8s cubic-bezier(.2,.8,.2,1); }
+    .stage-orbit::before,.stage-orbit::after { position:absolute; content:""; border:1px solid rgba(212,175,55,.72); border-radius:50%; }
+    .stage-orbit::before { inset:20px; }
+    .stage-orbit::after { inset:46px; border-color:rgba(212,175,55,.28); }
+    .stage-center { z-index:1; width:70px; height:70px; display:grid; place-items:center; border:1px solid var(--gold); border-radius:50%; color:var(--gold); background:#211a17; font-size:11px; font-weight:700; letter-spacing:.1em; }
+    .stage-audience { position:absolute; bottom:17px; color:rgba(245,239,230,.55); font-size:9px; letter-spacing:.18em; }
+    .stage-caption { position:absolute; top:17px; color:var(--gold); font-size:9px; font-weight:700; letter-spacing:.17em; }
+    .stage-controls { display:flex; gap:9px; padding:0 20px 20px; }
+    .stage-controls button { flex:1; border:1px solid rgba(212,175,55,.3); padding:10px 8px; color:var(--muted); background:transparent; cursor:pointer; font-size:10px; transition:all .2s; }
+    .stage-controls button.active { border-color:var(--gold); color:var(--ink); background:var(--gold); }
+    .scene-simulator { min-height:100%; overflow:hidden; transition:background .5s; }
+    .scene-simulator[data-scene="forest"] { background:linear-gradient(145deg,rgba(49,83,49,.33),rgba(33,26,23,.88)); }
+    .scene-simulator[data-scene="fire"] { background:linear-gradient(145deg,rgba(145,52,30,.43),rgba(33,26,23,.88)); }
+    .scene-simulator[data-scene="market"] { background:linear-gradient(145deg,rgba(43,55,104,.45),rgba(33,26,23,.9)); }
+    .scene-tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; padding:19px 20px 0; }
+    .scene-button { min-height:40px; border:1px solid rgba(212,175,55,.24); color:var(--muted); background:rgba(26,20,18,.35); cursor:pointer; font-size:9px; font-weight:700; letter-spacing:.09em; transition:all .2s; }
+    .scene-button.active { border-color:var(--gold); color:var(--gold); background:rgba(212,175,55,.1); }
+    .scene-content { padding:27px 24px 25px; }
+    .scene-content h3 { margin:0 0 7px; font:500 21px "Cinzel",Georgia,serif; }
+    .scene-content > p { margin:0; color:#c9bdae; font-size:11px; line-height:1.75; }
+    .sense-list { display:grid; gap:14px; margin-top:23px; }
+    .sense-item { display:grid; grid-template-columns:35px 1fr; gap:11px; align-items:start; }
+    .sense-icon { width:34px; height:34px; display:grid; place-items:center; border:1px solid rgba(212,175,55,.3); color:var(--gold); background:rgba(26,20,18,.32); font-size:15px; }
+    .sense-item strong { display:block; margin-bottom:3px; color:var(--gold); font-size:9px; letter-spacing:.13em; text-transform:uppercase; }
+    .sense-item span { display:block; color:#d5c9b9; font-size:11px; line-height:1.6; }
+    .scene-footnote { margin-top:20px!important; padding-top:15px; border-top:1px solid rgba(212,175,55,.15); color:rgba(245,239,230,.54)!important; font-size:10px!important; }
+    .modal {
+      position:fixed;
+      z-index:40;
+      inset:0;
+      display:none;
+      place-items:center;
+      padding:20px;
+      background:rgba(10,8,7,.82);
+      backdrop-filter:blur(8px);
+    }
+    .modal.open { display:grid; animation:page-in .25s ease both; }
+    .modal-card { position:relative; width:min(600px,100%); max-height:85vh; overflow:auto; border:1px solid var(--gold); padding:32px; background:#211a17; box-shadow:0 24px 90px rgba(0,0,0,.55); }
+    .modal-card h2 { margin:0 35px 8px 0; font:500 25px "Cinzel",Georgia,serif; }
+    .modal-card .modal-subtitle { margin:0 0 20px; color:var(--gold); font-size:11px; }
+    .modal-card p { color:#c9bdae; font-size:13px; line-height:1.8; }
+    .modal-close { position:absolute; top:14px; right:14px; width:34px; height:34px; border:1px solid var(--line); color:var(--cream); background:transparent; cursor:pointer; font-size:18px; }
+    .site-footer { border-top:1px solid rgba(212,175,55,.14); padding:25px 24px; color:rgba(245,239,230,.48); text-align:center; font-size:9px; letter-spacing:.16em; }
+    .site-footer span { color:var(--gold); }
+    @media (max-width: 850px) {
+      .header-inner { width:calc(100% - 30px); min-height:68px; gap:10px; }
+      .nav-list { gap:0; }
+      .nav-tab { padding:10px 8px; font-size:9px; letter-spacing:.1em; }
+      .nav-tab::after { right:8px; left:8px; }
+      .page { width:calc(100% - 34px); padding-top:48px; }
+      .shortcut-grid { grid-template-columns:repeat(2,1fr); }
+      .tech-layout { grid-template-columns:1fr; }
+      .editorial-grid { grid-template-columns:1fr; }
+      .editorial-card.wide { grid-column:auto; }
+      .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 560px) {
+      .header-inner { align-items:flex-start; flex-direction:column; padding:13px 0 8px; }
+      .brand { font-size:16px; }
+      .nav-list { width:100%; justify-content:space-between; overflow-x:auto; }
+      .nav-tab { flex-shrink:0; padding:9px 7px; font-size:8px; }
+      .nav-tab::after { right:7px; left:7px; }
+      .hero { min-height:570px; }
+      .curtain { width:8%; }
+      .hero-content { width:90%; padding:35px 8px; }
+      .hero-note { right:14px; left:14px; font-size:7px; letter-spacing:.1em; }
+      .shortcut-head { align-items:flex-start; flex-direction:column; }
+      .shortcut-card { min-height:175px; padding:17px; }
+      .shortcut-icon { margin-bottom:18px; }
+      .editorial-card,.editorial-card.wide { grid-template-columns:1fr; }
+      .editorial-card .image-frame { min-height:170px; }
+      .card-grid { grid-template-columns:1fr; }
+      .profile-card .image-frame,.costume-card .image-frame { min-height:250px; }
+      .scene-tabs { padding-right:13px; padding-left:13px; }
+      .scene-button { font-size:8px; }
+      .stage-controls button { font-size:9px; }
+      .modal-card { padding:27px 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home" aria-label="FABULA — Home">FABULA<small>A MUSICAL IN THE WILD</small></a>
+      <nav aria-label="Navigasi utama">
+        <ul class="nav-list" role="tablist">
+          <li><button class="nav-tab" id="tab-home" role="tab" aria-selected="true" aria-controls="page-home" data-page="home">HOME</button></li>
+          <li><button class="nav-tab" id="tab-description" role="tab" aria-selected="false" aria-controls="page-description" data-page="description">DESCRIPTION</button></li>
+          <li><button class="nav-tab" id="tab-casting" role="tab" aria-selected="false" aria-controls="page-casting" data-page="casting">CASTING</button></li>
+          <li><button class="nav-tab" id="tab-costume" role="tab" aria-selected="false" aria-controls="page-costume" data-page="costume">COSTUME</button></li>
+          <li><button class="nav-tab" id="tab-technical" role="tab" aria-selected="false" aria-controls="page-technical" data-page="technical">TECHNICAL</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page active" id="page-home" role="tabpanel" aria-labelledby="tab-home">
+      <div class="hero">
+        <div class="curtain left" aria-hidden="true"></div>
+        <div class="curtain right" aria-hidden="true"></div>
+        <div class="hero-content">
+          <div class="hero-kicker">Sebuah kisah tentang rumah yang terbakar</div>
+          <h1 class="hero-title gold-text">FABULA<span>THE WILD HAS A VOICE</span></h1>
+          <p class="hero-copy">Saat hutan kehilangan suaranya, para penjaganya bersatu. Sebuah drama musikal tentang krisis iklim, satwa endemik Indonesia, dan harga dari sebuah pengkhianatan.</p>
+          <button class="outline-button" data-go="description">MASUK KE CERITA <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="hero-note"><span>Teater • Alam • Perlawanan</span><span>Indonesia, hari ini</span></div>
+      </div>
+
+      <div class="shortcut-section">
+        <div class="shortcut-head">
+          <h2 class="serif">Jelajahi dunia <span class="gold-text">FABULA</span></h2>
+          <p>Pilih satu bab untuk membuka tirai.</p>
+        </div>
+        <div class="shortcut-grid">
+          <button class="shortcut-card" data-go="description"><span class="shortcut-icon" aria-hidden="true">✦</span><strong>DESCRIPTION</strong><span>Kenali kisah dan taruhan di balik hutan.</span></button>
+          <button class="shortcut-card" data-go="casting"><span class="shortcut-icon" aria-hidden="true">♟</span><strong>CASTING</strong><span>Temui para penjaga dan pemburu cerita.</span></button>
+          <button class="shortcut-card" data-go="costume"><span class="shortcut-icon" aria-hidden="true">❖</span><strong>COSTUME</strong><span>Lihat alam menjelma menjadi karakter.</span></button>
+          <button class="shortcut-card" data-go="technical"><span class="shortcut-icon" aria-hidden="true">◎</span><strong>TECHNICAL</strong><span>Rasakan dunia panggung dari dekat.</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-description" role="tabpanel" aria-labelledby="tab-description">
+      <div class="eyebrow">Catatan dramaturgi</div>
+      <h2 class="section-heading">Satu hutan. Banyak suara.<br><span class="gold-text">Satu pertaruhan.</span></h2>
+      <p class="section-intro">FABULA membawa krisis iklim dan ancaman terhadap satwa endemik ke panggung musikal yang terus berubah—dari lingkaran tradisi menuju dunia modern yang bising.</p>
+      <div class="editorial-grid">
+        <article class="editorial-card">
+          <div class="image-frame"><span>Frame dokumentasi · Asal mula</span></div>
+          <div class="editorial-copy"><h3>ORIGIN</h3><p>Konsep ini berangkat dari keprihatinan terhadap krisis iklim, khususnya kebakaran hutan (karhutla) dan ancaman kepunahan satwa endemik Indonesia. Karya ini membawa isu lingkungan ke atas panggung yang dinamis melalui benturan karakter musikal yang merepresentasikan masyarakat yang terpecah. Ide penggunaan panggung melingkar 360 derajat dirancang untuk memberikan pengalaman baru dan perspektif yang luas bagi penonton.</p></div>
+        </article>
+        <article class="editorial-card">
+          <div class="image-frame"><span>Frame dokumentasi · Aliansi</span></div>
+          <div class="editorial-copy"><h3>PREMIS</h3><p>Berbagai satwa terancam punah bersatu melawan kehancuran habitat mereka akibat kebakaran hutan, namun pengkhianatan dari dalam aliansi justru membuat mereka terjebak menjadi korban perdagangan satwa liar ilegal.</p></div>
+        </article>
+        <article class="editorial-card">
+          <div class="image-frame"><span>Frame dokumentasi · Konflik</span></div>
+          <div class="editorial-copy"><h3>CONFLICT</h3><p>Setelah kehilangan rumah akibat karhutla, satwa-satwa langka bersatu melawan manusia perusak habitat. Namun perjuangan berubah arah ketika salah satu dari mereka berkhianat. Akibatnya, seluruh aliansi tertangkap, dikurung, dan dijual di pasar hewan ilegal—sebuah akhir kelam yang dipertegas oleh benturan musik etnik tradisional dan ketukan phonk modern.</p></div>
+        </article>
+        <article class="editorial-card">
+          <div class="image-frame"><span>Frame dokumentasi · Tema</span></div>
+          <div class="editorial-copy"><h3>THEME</h3><p>Kehancuran satu habitat berarti kehancuran seluruh makhluk hidup, bukan hanya satu spesies. Persatuan adalah kekuatan terbesar mereka, tetapi keserakahan dan pengkhianatan dapat menghancurkannya dari dalam. Pergeseran musik dari tradisional ke modern menyimbolkan bagaimana alam yang dulu hidup dan mengakar kuat pada budaya kini direduksi menjadi sekadar komoditas.</p></div>
+        </article>
+        <article class="editorial-card">
+          <div class="image-frame"><span>Frame dokumentasi · Taruhan</span></div>
+          <div class="editorial-copy"><h3>STAKES</h3><p>Masa depan satwa liar Indonesia dipertaruhkan. Jika mereka gagal bersatu, habitat akan terus lenyap dan makin banyak spesies terancam punah serta diperdagangkan secara ilegal. Lebih dari sekadar kelangsungan hidup satwa, warisan alam Indonesia ikut terancam dengan pertanyaan besar: <em>jika persatuan tak mampu mengalahkan keserakahan dan pengkhianatan, apa yang tersisa dari dunia yang mereka perjuangkan?</em></p></div>
+        </article>
+        <article class="editorial-card">
+          <div class="image-frame"><span>Frame dokumentasi · Pengalaman</span></div>
+          <div class="editorial-copy"><h3>REPEATABILITY</h3><p>Pertunjukan ini layak ditonton berulang kali karena penonton akan merasakan kepuasan melihat perlawanan satwa terhadap ketidakcakapan penanganan karhutla, perusahaan swasta, dan individu serakah. Ditambah lagi, transisi panggung dari 180° menjadi 360° yang dipadukan dengan musik tradisional hingga phonk di akhir menciptakan pengalaman menonton yang memikat dan tidak membosankan.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" id="page-casting" role="tabpanel" aria-labelledby="tab-casting">
+      <div class="eyebrow">Para penghuni rimba</div>
+      <h2 class="section-heading">Temui <span class="gold-text">karakternya.</span></h2>
+      <p class="section-intro">Setiap suara membawa harapan, luka, dan rahasia. Pilih kartu untuk mengenal peran mereka lebih dekat.</p>
+      <div class="card-grid" id="casting-grid"></div>
+    </section>
+
+    <section class="page" id="page-costume" role="tabpanel" aria-labelledby="tab-costume">
+      <div class="eyebrow">Busana & identitas</div>
+      <h2 class="section-heading">Alam menjadi <span class="gold-text">tokoh.</span></h2>
+      <p class="section-intro">Tekstur hutan dan ciri satwa bertemu siluet urban. Setiap detail kostum menyimpan jejak habitat, sekaligus perubahan dunia yang mengancamnya.</p>
+      <div class="filter-row" role="group" aria-label="Filter kategori kostum">
+        <button class="filter-button active" data-filter="Semua">Semua</button>
+        <button class="filter-button" data-filter="Satwa Endemik">Satwa Endemik</button>
+        <button class="filter-button" data-filter="Antagonis / Urban">Antagonis / Urban</button>
+      </div>
+      <div class="card-grid" id="costume-grid"></div>
+    </section>
+
+    <section class="page" id="page-technical" role="tabpanel" aria-labelledby="tab-technical">
+      <div class="eyebrow">Di balik tirai</div>
+      <h2 class="section-heading">Panggung yang <span class="gold-text">bernapas.</span></h2>
+      <p class="section-intro">Perubahan ruang, cahaya, aroma, dan musik mengajak penonton bergerak bersama perjalanan para satwa—dari rimba yang hidup ke kota yang mengurung.</p>
+      <div class="tech-layout">
+        <article class="tech-panel">
+          <div class="tech-panel-head"><h3>Transformasi panggung</h3><p>Dari panggung frontal 180° menuju lingkaran 360° yang membuka perspektif penonton dari segala arah.</p></div>
+          <div class="stage-box" id="stage-box">
+            <span class="stage-caption" id="stage-caption">PERSPEKTIF FRONTAL</span>
+            <div class="stage-orbit" id="stage-orbit"><div class="stage-center">FABULA</div></div>
+            <span class="stage-audience" id="stage-audience">PENONTON · 180°</span>
+          </div>
+          <div class="stage-controls">
+            <button class="active" data-angle="180" aria-pressed="true">◖ 180° FRONTAL</button>
+            <button data-angle="360" aria-pressed="false">◎ 360° MELINGKAR</button>
+          </div>
+        </article>
+        <article class="tech-panel scene-simulator" id="scene-simulator" data-scene="forest">
+          <div class="tech-panel-head"><h3>Simulasi multisensori</h3><p>Pilih adegan untuk mengubah atmosfer panggung.</p></div>
+          <div class="scene-tabs" role="group" aria-label="Pilih adegan">
+            <button class="scene-button active" data-scene-button="forest" aria-pressed="true">01 · HUTAN</button>
+            <button class="scene-button" data-scene-button="fire" aria-pressed="false">02 · KARHUTLA</button>
+            <button class="scene-button" data-scene-button="market" aria-pressed="false">03 · PASAR GELAP</button>
+          </div>
+          <div class="scene-content" aria-live="polite">
+            <h3 id="scene-title">Hutan Tropis</h3>
+            <p id="scene-description">Rumah yang hidup menjadi pembuka perjalanan—hangat, rimbun, dan penuh irama.</p>
+            <div class="sense-list">
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">◉</div><div><strong>Visual</strong><span id="sense-visual">Cahaya hijau keemasan menyaring kanopi; bayangan daun bergerak di lantai panggung.</span></div></div>
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">♨</div><div><strong>Aroma · Scent diffuser</strong><span id="sense-scent">Kayu basah, tanah hutan, dan dedaunan segar.</span></div></div>
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">♫</div><div><strong>Audio · Musik</strong><span id="sense-audio">Musik etnik tradisional ritmis, berpadu bunyi alam.</span></div></div>
+              <div class="sense-item"><div class="sense-icon" aria-hidden="true">◎</div><div><strong>Sudut panggung</strong><span id="sense-stage">Panggung 180° frontal; fokus visual tertuju pada kesatuan para satwa.</span></div></div>
+            </div>
+            <p class="scene-footnote" id="scene-footnote">Nuansa dibangun melalui permainan cahaya, proyeksi, dan tata suara—aroma merupakan simulasi konseptual.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">SEBUAH PERTUNJUKAN TENTANG RUMAH, <span>KEHILANGAN,</span> DAN SUARA YANG TERSISA</footer>
+
+  <div class="modal" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close" aria-label="Tutup detail">×</button>
+      <div class="eyebrow">Catatan karakter</div>
+      <h2 id="modal-title"></h2>
+      <div class="modal-subtitle" id="modal-subtitle"></div>
+      <p id="modal-description"></p>
+    </div>
+  </div>
+
+  <script>
+    // EDIT DATA CASTING DI SINI
+    const castingData = [
+      { name: "Raka", species: "Orangutan", cast: "Nama Pemeran", trait: "Penjaga hutan yang bijak, berani, dan menyatukan aliansi.", detail: "Raka menyimpan ingatan tentang rimba sebelum api datang. Ia percaya setiap makhluk punya tempat dan suara, lalu mengajak para satwa mempertahankan rumah mereka bersama-sama.", image: "Frame foto · Orangutan" },
+      { name: "Gara", species: "Harimau Sumatera", cast: "Nama Pemeran", trait: "Pelindung yang tegas dengan naluri pemimpin.", detail: "Gara bergerak di antara amarah dan tanggung jawab. Kekuatan dan keberaniannya menjadi perisai aliansi, tetapi ia harus belajar bahwa perlindungan bukan berarti berjuang sendirian.", image: "Frame foto · Harimau Sumatera" },
+      { name: "Banyu", species: "Badak Sumatera", cast: "Nama Pemeran", trait: "Sosok tenang yang memegang kenangan rimba.", detail: "Banyu adalah saksi sunyi atas habitat yang terus menyempit. Keteguhannya mengingatkan kelompok bahwa kehilangan satu bagian hutan dapat mengubah hidup seluruh penghuni.", image: "Frame foto · Badak Sumatera" },
+      { name: "Laras", species: "Gajah Sumatera", cast: "Nama Pemeran", trait: "Peka dan penuh empati, penjaga ikatan kelompok.", detail: "Laras membawa suara yang lembut namun tak mudah dipatahkan. Ia merawat ikatan di antara para satwa ketika ketakutan dan perbedaan mulai mengancam persatuan mereka.", image: "Frame foto · Gajah Sumatera" },
+      { name: "Suri", species: "Rangkong", cast: "Nama Pemeran", trait: "Pengamat lincah yang menjadi mata dari atas kanopi.", detail: "Suri selalu melihat tanda-tanda perubahan lebih dulu. Ia membawa kabar dari balik pepohonan dan percaya bahwa kewaspadaan dapat menyelamatkan aliansi.", image: "Frame foto · Rangkong" },
+      { name: "Sang Kolektor", species: "Antagonis · Pengkhianat", cast: "Nama Pemeran", trait: "Ambisius, manipulatif, dan menjual kepercayaan.", detail: "Di balik janji keselamatan, Sang Kolektor melihat hutan sebagai komoditas. Pengkhianatannya membalikkan perjuangan aliansi dan menyeret mereka ke pasar hewan ilegal.", image: "Frame foto · Antagonis urban" }
+    ];
+
+    // EDIT DATA KOSTUM DI SINI
+    const costumeData = [
+      { name: "Penjaga Kanopi", character: "Orangutan · Raka", category: "Satwa Endemik", materials: "Serat bertekstur, kain berwarna tanah, dan detail rumbai terinspirasi akar serta lumut.", philosophy: "Siluet hangat dan berlapis merujuk pada kanopi hutan sebagai rumah sekaligus pelindung. Tekstur organik mengingatkan bahwa tubuh dan habitat saling terhubung.", image: "Frame kostum · Penjaga kanopi" },
+      { name: "Bayang Sumatera", character: "Harimau · Gara", category: "Satwa Endemik", materials: "Kain bertekstur dengan aksen garis kontras, lapisan ringan, dan detail warna bumi.", philosophy: "Garis-garisnya terinspirasi corak harimau Sumatera, diterjemahkan menjadi gerak yang tegas agar kekuatan karakter terasa tanpa kehilangan kedekatannya dengan alam.", image: "Frame kostum · Harimau Sumatera" },
+      { name: "Jejak Rimba", character: "Badak · Banyu", category: "Satwa Endemik", materials: "Kain kanvas dan bahan bertekstur kasar bernuansa tanah, dengan panel bentuk berlapis.", philosophy: "Lapisan dan bentuk yang kokoh menghadirkan ketahanan badak sekaligus menyinggung rapuhnya habitat yang kian terfragmentasi.", image: "Frame kostum · Badak Sumatera" },
+      { name: "Penerbang Rimba", character: "Rangkong · Suri", category: "Satwa Endemik", materials: "Kain ringan dengan panel menyerupai bulu dan aksen warna hangat.", philosophy: "Siluet yang ringan memberi ruang pada gerak, sementara bentuk paruh dan warna terinspirasi rangkong menjadi pengingat peran burung dalam menjaga kehidupan hutan.", image: "Frame kostum · Rangkong" },
+      { name: "Pasar Bayangan", character: "Sang Kolektor", category: "Antagonis / Urban", materials: "Jaket berpotongan urban, tekstur sintetis, aksen metalik, dan palet hitam-neon.", philosophy: "Kontras material artifisial memisahkan antagonis dari tekstur alam. Detail industrial mencerminkan dunia yang mengubah kehidupan menjadi barang dagangan.", image: "Frame kostum · Urban gelap" },
+      { name: "Kandang Kota", character: "Ensemble · Pasar gelap", category: "Antagonis / Urban", materials: "Lapisan kain gelap, detail garis seperti jeruji, dan aksesori metalik ringan.", philosophy: "Motif garis membingkai tubuh seperti ruang kurungan. Kostum ensemble menyatukan suasana pasar gelap tanpa menghapus identitas tiap karakter.", image: "Frame kostum · Ensemble urban" }
+    ];
+
+    const sceneData = {
+      forest: {
+        title: "Hutan Tropis",
+        description: "Rumah yang hidup menjadi pembuka perjalanan—hangat, rimbun, dan penuh irama.",
+        visual: "Cahaya hijau keemasan menyaring kanopi; bayangan daun bergerak di lantai panggung.",
+        scent: "Kayu basah, tanah hutan, dan dedaunan segar.",
+        audio: "Musik etnik tradisional ritmis, berpadu bunyi alam.",
+        stage: "Panggung 180° frontal; fokus visual tertuju pada kesatuan para satwa.",
+        footnote: "Nuansa dibangun melalui permainan cahaya, proyeksi, dan tata suara—aroma merupakan simulasi konseptual.",
+        glow: "rgba(89, 128, 71, .22)"
+      },
+      fire: {
+        title: "Karhutla & Konflik",
+        description: "Api merambat, rumah menghilang, dan ketegangan memecah harmoni aliansi.",
+        visual: "Merah bara dan amber berdenyut di antara lapisan proyeksi asap; cahaya berubah semakin tajam.",
+        scent: "Aroma konseptual kayu terbakar dan kabut asap tipis.",
+        audio: "Perkusi intens dan ketegangan dramatis; motif etnik mulai terputus-putus.",
+        stage: "Panggung frontal mulai terbuka; perpindahan fokus menggambarkan aliansi yang terpecah.",
+        footnote: "Asap dan aroma ditampilkan sebagai simulasi artistik yang aman melalui cahaya, proyeksi, dan rancangan audio.",
+        glow: "rgba(198, 70, 32, .3)"
+      },
+      market: {
+        title: "Pasar Gelap & Perkotaan",
+        description: "Di ujung perjalanan, para satwa terkurung dalam dunia neon yang bising dan dingin.",
+        visual: "Neon biru-ungu, siluet jeruji, dan bayangan kota menggantikan warna hutan.",
+        scent: "Aroma konseptual asap kendaraan perkotaan, logam, dan hiruk-pikuk pasar.",
+        audio: "Phonk beats modern yang menghentak, bertabrakan dengan gema motif tradisional.",
+        stage: "Panggung 360° mengelilingi penonton; rasa terkurung hadir dari segala arah.",
+        footnote: "Adegan berakhir dalam ruang bunyi dan cahaya yang rapat; aroma merupakan deskripsi konsep, bukan emisi nyata.",
+        glow: "rgba(72, 83, 171, .3)"
+      }
+    };
+
+    const navTabs = Array.from(document.querySelectorAll(".nav-tab"));
+    const pages = Array.from(document.querySelectorAll(".page"));
+
+    function showPage(name) {
+      const target = document.getElementById("page-" + name);
+      const tab = document.querySelector('.nav-tab[data-page="' + name + '"]');
+      if (!target || !tab) return;
+      pages.forEach(page => page.classList.toggle("active", page === target));
+      navTabs.forEach(button => {
+        const selected = button === tab;
+        button.setAttribute("aria-selected", String(selected));
+        button.tabIndex = selected ? 0 : -1;
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    navTabs.forEach(tab => tab.addEventListener("click", () => showPage(tab.dataset.page)));
+    document.querySelectorAll("[data-go]").forEach(button => button.addEventListener("click", () => showPage(button.dataset.go)));
+    document.querySelector(".brand").addEventListener("click", event => {
+      event.preventDefault();
+      showPage("home");
+    });
+    document.querySelector(".nav-list").addEventListener("keydown", event => {
+      const currentIndex = navTabs.indexOf(document.activeElement);
+      if (currentIndex < 0) return;
+      let nextIndex = currentIndex;
+      if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % navTabs.length;
+      else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + navTabs.length) % navTabs.length;
+      else return;
+      event.preventDefault();
+      navTabs[nextIndex].focus();
+      showPage(navTabs[nextIndex].dataset.page);
+    });
+
+    const modal = document.getElementById("detail-modal");
+    const modalTitle = document.getElementById("modal-title");
+    const modalSubtitle = document.getElementById("modal-subtitle");
+    const modalDescription = document.getElementById("modal-description");
+    let previousFocus = null;
+
+    function openModal(title, subtitle, description) {
+      previousFocus = document.activeElement;
+      modalTitle.textContent = title;
+      modalSubtitle.textContent = subtitle;
+      modalDescription.textContent = description;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      document.getElementById("modal-close").focus();
+    }
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (previousFocus) previousFocus.focus();
+    }
+    document.getElementById("modal-close").addEventListener("click", closeModal);
+    modal.addEventListener("click", event => { if (event.target === modal) closeModal(); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape" && modal.classList.contains("open")) closeModal(); });
+
+    const castingGrid = document.getElementById("casting-grid");
+    castingData.forEach(character => {
+      const card = document.createElement("article");
+      card.className = "profile-card";
+      card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info"><h3></h3><div class="cast-name"></div><p></p><button class="text-button">LIHAT DETAIL →</button></div>';
+      card.querySelector(".image-frame span").textContent = character.image;
+      card.querySelector("h3").textContent = character.species;
+      card.querySelector(".cast-name").textContent = character.name + " · " + character.cast;
+      card.querySelector(".profile-info p").textContent = character.trait;
+      card.querySelector(".text-button").addEventListener("click", () => openModal(character.name, character.species + " · " + character.cast, character.detail));
+      castingGrid.appendChild(card);
+    });
+
+    const costumeGrid = document.getElementById("costume-grid");
+    function renderCostumes(filter) {
+      costumeGrid.replaceChildren();
+      costumeData.filter(item => filter === "Semua" || item.category === filter).forEach(item => {
+        const card = document.createElement("article");
+        card.className = "costume-card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", "Detail kostum " + item.name);
+        card.innerHTML = '<div class="image-frame"><span></span></div><div class="profile-info costume-info"><div class="costume-meta"><span></span><span>Detail ↗</span></div><h3></h3><p></p></div>';
+        card.querySelector(".image-frame span").textContent = item.image;
+        card.querySelector(".costume-meta span").textContent = item.category;
+        card.querySelector("h3").textContent = item.name;
+        card.querySelector(".costume-info p").textContent = item.character;
+        const showCostume = () => openModal(item.name, item.character + " · " + item.category, "Material: " + item.materials + "\n\nFilosofi: " + item.philosophy);
+        card.addEventListener("click", showCostume);
+        card.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            showCostume();
+          }
+        });
+        costumeGrid.appendChild(card);
+      });
+    }
+    renderCostumes("Semua");
+    document.querySelectorAll(".filter-button").forEach(button => button.addEventListener("click", () => {
+      document.querySelectorAll(".filter-button").forEach(item => item.classList.toggle("active", item === button));
+      renderCostumes(button.dataset.filter);
+    }));
+
+    const sceneSimulator = document.getElementById("scene-simulator");
+    const sceneFields = {
+      title: document.getElementById("scene-title"),
+      description: document.getElementById("scene-description"),
+      visual: document.getElementById("sense-visual"),
+      scent: document.getElementById("sense-scent"),
+      audio: document.getElementById("sense-audio"),
+      stage: document.getElementById("sense-stage"),
+      footnote: document.getElementById("scene-footnote")
+    };
+    document.querySelectorAll(".scene-button").forEach(button => button.addEventListener("click", () => {
+      const scene = sceneData[button.dataset.sceneButton];
+      if (!scene) return;
+      sceneSimulator.dataset.scene = button.dataset.sceneButton;
+      document.documentElement.style.setProperty("--scene-glow", scene.glow);
+      Object.keys(sceneFields).forEach(key => { sceneFields[key].textContent = scene[key]; });
+      document.querySelectorAll(".scene-button").forEach(item => {
+        const active = item === button;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+    }));
+
+    document.querySelectorAll(".stage-controls button").forEach(button => button.addEventListener("click", () => {
+      const fullCircle = button.dataset.angle === "360";
+      document.getElementById("stage-orbit").style.transform = fullCircle ? "scale(1.13) rotate(35deg)" : "scale(.92) rotate(0deg)";
+      document.getElementById("stage-caption").textContent = fullCircle ? "PERSPEKTIF MELINGKAR" : "PERSPEKTIF FRONTAL";
+      document.getElementById("stage-audience").textContent = fullCircle ? "PENONTON · 360°" : "PENONTON · 180°";
+      document.querySelectorAll(".stage-controls button").forEach(item => {
+        const active = item === button;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+      document.getElementById("sense-stage").textContent = fullCircle
+        ? "Panggung melingkar 360°; penonton mengelilingi ruang dan menyaksikan perubahan dari segala arah."
+        : "Panggung frontal 180°; fokus visual tertuju pada kesatuan para satwa.";
+    }));
+  </script>
+</body>
+</html>
