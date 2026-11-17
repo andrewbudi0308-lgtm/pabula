@@ -855,6 +855,51 @@
       }
     };
 
+    const descriptionPhotos = [
+      {
+        url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Borneo_fires_and_smoke%2C_2002.jpg/960px-Borneo_fires_and_smoke%2C_2002.jpg",
+        alt: "NASA satellite image showing fires and thick smoke over Borneo",
+        caption: "Borneo fires and smoke · NASA satellite image",
+        credit: "NASA / Jacques Descloitres · Public domain",
+        source: "https://commons.wikimedia.org/wiki/File:Borneo_fires_and_smoke,_2002.jpg"
+      },
+      {
+        url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Sumatran_Tiger_%289122811106%29.jpg/960px-Sumatran_Tiger_%289122811106%29.jpg",
+        alt: "Sumatran tiger, representing Indonesia's endangered wildlife",
+        caption: "Sumatran tiger · endangered wildlife",
+        credit: "Bernard Spragg. NZ · CC0",
+        source: "https://commons.wikimedia.org/wiki/File:Sumatran_Tiger_(9122811106).jpg"
+      },
+      {
+        url: "assets/fabula-conflict-fire.png",
+        alt: "People silhouetted against flames and thick smoke during a forest fire at night",
+        caption: "Forest fire at night · conflict scene",
+        credit: "Image provided by the FABULA team",
+        source: ""
+      },
+      {
+        url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Palm_oil_plantations_ESA19484729.jpeg/960px-Palm_oil_plantations_ESA19484729.jpeg",
+        alt: "Copernicus Sentinel-2 image of oil palm plantations and remaining rainforest in East Kalimantan",
+        caption: "Oil palm plantations · East Kalimantan",
+        credit: "European Space Agency / Copernicus Sentinel-2 · CC BY-SA 3.0 IGO",
+        source: "https://commons.wikimedia.org/wiki/File:Palm_oil_plantations_ESA19484729.jpeg"
+      },
+      {
+        url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Baby_Orangutans_by_Bunga.jpg/960px-Baby_Orangutans_by_Bunga.jpg",
+        alt: "Baby orangutan at the Nyaru Menteng Orangutan Rescue and Rehabilitation Center",
+        caption: "Young orangutan · Nyaru Menteng rescue center",
+        credit: "Fitriyantibung · CC BY-SA 4.0",
+        source: "https://commons.wikimedia.org/wiki/File:Baby_Orangutans_by_Bunga.jpg"
+      },
+      {
+        url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Theatre_in_the_Round_%2815676322577%29.jpg/960px-Theatre_in_the_Round_%2815676322577%29.jpg",
+        alt: "Theatre in the round with the audience seated around the stage",
+        caption: "Theatre in the round · audience surrounds the stage",
+        credit: "Tony Webster · CC BY 2.0",
+        source: "https://commons.wikimedia.org/wiki/File:Theatre_in_the_Round_(15676322577).jpg"
+      }
+    ];
+
     // EDIT DATA CASTING DI SINI
     const castingData = [
       { name: "Korang", species: "Rhinoceros Hornbill · MC", cast: "Performer name", trait: "A lively host who connects the story and the forest's inhabitants.", detail: "Korang is the MC and guide who leads the audience through FABULA. From above the canopy, Korang watches the forest change and gives the animals a voice.", image: "Photo frame · Korang, rhinoceros hornbill", photo: animalPhotos.korang },
@@ -994,13 +1039,15 @@
       caption.className = "photo-caption";
       caption.textContent = photo.caption;
 
-      const credit = document.createElement("a");
+      const credit = document.createElement(photo.source ? "a" : "span");
       credit.className = "photo-credit";
-      credit.href = photo.source;
-      credit.target = "_blank";
-      credit.rel = "noopener noreferrer";
+      if (photo.source) {
+        credit.href = photo.source;
+        credit.target = "_blank";
+        credit.rel = "noopener noreferrer";
+      }
       credit.textContent = photo.credit;
-      credit.setAttribute("aria-label", "Photo source and license: " + photo.credit);
+      credit.setAttribute("aria-label", "Image credit: " + photo.credit);
 
       image.addEventListener("error", () => {
         frame.classList.remove("has-photo");
@@ -1013,6 +1060,11 @@
       frame.classList.add("has-photo");
       frame.replaceChildren(image, caption, credit);
     }
+
+    document.querySelectorAll(".editorial-card .image-frame").forEach((frame, index) => {
+      const photo = descriptionPhotos[index];
+      if (photo) addAnimalPhoto(frame, photo, frame.querySelector("span").textContent);
+    });
 
     const castingGrid = document.getElementById("casting-grid");
     castingData.forEach(character => {
